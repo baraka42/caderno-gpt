@@ -110,7 +110,7 @@ if st.session_state.mundo_invertido:
     <p class="dossie-texto" style="text-align: center; margin-top: 3rem;"><span class="caneta-vermelha" style="font-size: 2.8rem; border: 3px solid #b32424 !important; padding: 15px !important; display: inline-block !important; transform: rotate(-2deg) !important;">O Ranca é inevitável!</span></p>
     ''', unsafe_allow_html=True)
 
-    st.button("FECHAR DOSSIÊ (VOLTAR PARA O CADERNO DIDÁTICO)", on_click=alternar_fita)
+    st.button("FECHAR DOSSIÊ E RETORNAR AO CADERNO DIDÁTICO", on_click=alternar_fita)
 
 # ==============================================================================
 # LADO A: O CADERNO DIDÁTICO (A Poesia do Movimento)
@@ -122,64 +122,74 @@ else:
 
             .stApp { background-color: #e8e6df !important; }
             .block-container {
-                max-width: 1150px !important; padding: 6rem 5rem !important; background-color: #fffdf8 !important;
+                max-width: 1150px !important; padding: 5rem !important; background-color: #fffdf8 !important;
                 box-shadow: 0 25px 70px rgba(0,0,0,0.1) !important; border-radius: 4px !important; 
                 border-left: 1px solid #eae5d9 !important; border-right: 1px solid #eae5d9 !important; margin-top: 2rem !important; margin-bottom: 2rem !important;
             }
             header {visibility: hidden !important;} footer {visibility: hidden !important;}
 
+            /* Trava de Cores absolutas */
             h1, h2, h3, h4, h5, h6 { color: #1a1a1a !important; font-family: 'Playfair Display', serif !important; }
             p, span, div, li, a { color: #2c2c2c !important; font-family: 'Lora', serif !important; }
 
-            .capa-container { display: flex; flex-direction: column; min-height: 85vh; justify-content: center; align-items: center; border-bottom: 3px double #d4cbb8 !important; padding-bottom: 4rem !important; margin-bottom: 4rem !important;}
-            .instituicao-capa { font-family: 'Playfair Display', serif !important; font-size: 1.2rem !important; letter-spacing: 4px !important; text-transform: uppercase !important; color: #8c3a3a !important; margin-bottom: 2rem !important; text-align: center !important;}
-            .titulo-capa { font-size: 4.5rem !important; font-weight: 700 !important; text-align: center !important; margin: 1rem 0 !important; line-height: 1.2 !important; color: #1a1a1a !important;}
-            .subtitulo-capa { font-size: 2rem !important; font-style: italic !important; color: #555555 !important; text-align: center !important; margin-bottom: 2rem !important;}
+            /* Estrutura de Páginas */
+            .quebra-pagina { border-top: 2px dashed #d4cbb8 !important; margin: 5rem 0 !important; opacity: 0.5 !important;}
+
+            /* --- CAPA E CONTRACAPA --- */
+            .capa-container { display: block; text-align: center !important; margin-bottom: 4rem !important;}
+            .instituicao-capa { font-family: 'Playfair Display', serif !important; font-size: 1.2rem !important; letter-spacing: 4px !important; text-transform: uppercase !important; color: #8c3a3a !important; margin-bottom: 2rem !important;}
+            .titulo-capa { font-size: 4.5rem !important; font-weight: 700 !important; margin: 1rem 0 !important; line-height: 1.2 !important;}
+            .subtitulo-capa { font-size: 2rem !important; font-style: italic !important; color: #555555 !important; margin-bottom: 3rem !important;}
             
-            .ficha-catalografica { border: 2px solid #d4cbb8 !important; padding: 2.5rem !important; max-width: 700px !important; margin: 5rem auto !important; font-size: 1rem !important; color: #444 !important; line-height: 1.5 !important; background-color: #faf8f2 !important; }
-            .ficha-header { font-weight: bold !important; text-align: center !important; margin-bottom: 1.5rem !important; text-transform: uppercase !important; font-size: 1.1rem !important; color: #1a1a1a !important; }
+            .contracapa-container { display: block; text-align: center !important; margin-top: 4rem !important; padding: 4rem 2rem !important; background-color: #faf8f2 !important; border: 1px solid #eae5d9 !important;}
+            .frase-contracapa { font-family: 'Playfair Display', serif !important; font-size: 2.8rem !important; font-style: italic !important; color: #8c3a3a !important; line-height: 1.4 !important; margin-bottom: 3rem !important;}
 
-            .sumario-container { max-width: 800px !important; margin: 4rem auto 6rem auto !important; }
-            .sumario-item { display: flex !important; align-items: baseline !important; margin-bottom: 1.2rem !important; font-size: 1.3rem !important; text-decoration: none !important;}
-            .sumario-titulo { flex-shrink: 0 !important; padding-right: 10px !important; font-weight: 600 !important; }
-            .sumario-lider { flex-grow: 1 !important; border-bottom: 2px dotted #d4cbb8 !important; margin: 0 10px !important; position: relative !important; top: -5px !important; }
-            .sumario-pagina { flex-shrink: 0 !important; padding-left: 10px !important; color: #8c3a3a !important; font-weight: bold !important;}
+            .ficha-catalografica { border: 2px solid #d4cbb8 !important; padding: 2.5rem !important; max-width: 700px !important; margin: 5rem auto !important; font-size: 1rem !important; color: #444 !important; line-height: 1.5 !important; background-color: #faf8f2 !important; text-align: left !important;}
+            .ficha-header { font-weight: bold !important; text-align: center !important; margin-bottom: 1.5rem !important; text-transform: uppercase !important; font-size: 1.1rem !important;}
 
+            /* --- TIPOGRAFIA DO TEXTO PRINCIPAL --- */
             .texto { font-size: 1.25rem !important; line-height: 1.85 !important; text-align: justify !important; margin-bottom: 1.5rem !important; }
             .texto-colunas { column-count: 2 !important; column-gap: 3.5rem !important; column-rule: 1px solid #eae5d9 !important; text-align: justify !important; }
             .dropcap::first-letter { float: left !important; font-size: 5.5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: #8c3a3a !important; font-weight: 700 !important; }
+            .subtitulo-capitulo { font-size: 2.5rem !important; color: #8c3a3a !important; border-bottom: 1px solid #eae5d9 !important; padding-bottom: 0.8rem !important; margin-top: 2rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}
             
-            .subtitulo-capitulo { font-size: 2.2rem !important; color: #8c3a3a !important; border-bottom: 1px solid #eae5d9 !important; padding-bottom: 0.8rem !important; margin-top: 5rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}
-            
-            .box-imagem { background-color: #f5f5f5 !important; border: 2px dashed #cccccc !important; border-radius: 4px !important; padding: 40px 20px !important; text-align: center !important; margin: 2rem 0 !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; min-height: 350px !important; box-shadow: inset 0 0 15px rgba(0,0,0,0.02) !important;}
-            .box-imagem-full { min-height: 500px !important; margin: 4rem 0 !important;}
-            .box-imagem span.tag { font-family: sans-serif !important; text-transform: uppercase !important; font-size: 0.9rem !important; font-weight: bold !important; color: #888888 !important; margin-bottom: 10px !important; letter-spacing: 1px !important;}
-            .box-imagem span.desc { font-style: italic !important; color: #555555 !important; font-size: 1.2rem !important; max-width: 80% !important; text-align: center !important;}
+            /* --- ESPAÇOS PARA IMAGENS (PLACEHOLDERS CORRIGIDOS) --- */
+            .box-imagem { background-color: #f5f5f5 !important; border: 2px dashed #cccccc !important; border-radius: 4px !important; padding: 2rem !important; text-align: center !important; margin: 2rem 0 !important; width: 100% !important; min-height: 300px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important;}
+            .box-imagem-full { min-height: 500px !important; margin: 0 !important; border: 2px solid #b3a996 !important; background-color: #ede9de !important;}
+            .box-imagem span.tag { font-family: sans-serif !important; text-transform: uppercase !important; font-size: 1rem !important; font-weight: bold !important; color: #888888 !important; margin-bottom: 15px !important; letter-spacing: 2px !important;}
+            .box-imagem span.desc { font-style: italic !important; color: #555555 !important; font-size: 1.2rem !important; max-width: 80% !important; text-align: center !important; line-height: 1.5 !important;}
 
-            .pos-textual-container { margin-top: 6rem !important; border-top: 3px double #d4cbb8 !important; padding-top: 4rem !important; text-align: center !important;}
-            
-            .caixa-secreta { margin-top: 6rem !important; padding: 4rem 2rem !important; text-align: center !important; background-color: #faf8f2 !important; border: 1px dashed #d4cbb8 !important; border-radius: 8px !important;}
+            /* --- BOTÃO LADO B --- */
+            .caixa-secreta { margin-top: 4rem !important; padding-top: 2rem !important; text-align: center !important;}
             .stButton { text-align: center !important; }
             .stButton > button { background-color: #ffffff !important; border: 1px solid #d4cbb8 !important; color: #8c3a3a !important; font-family: 'Lora', serif !important; font-size: 1.1rem !important; padding: 15px 30px !important; box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important; transition: all 0.3s !important; text-transform: uppercase !important; letter-spacing: 2px !important;}
-            .stButton > button:hover { background-color: #8c3a3a !important; color: #ffffff !important; border: 1px solid #8c3a3a !important; box-shadow: 0 6px 15px rgba(140, 58, 58, 0.2) !important;}
+            .stButton > button:hover { background-color: #8c3a3a !important; color: #ffffff !important; border: 1px solid #8c3a3a !important;}
         </style>
     """, unsafe_allow_html=True)
 
+    # =========================================================
+    # PÁGINA 1: CAPA
+    # =========================================================
     st.markdown('''
     <div class="capa-container">
         <p class="instituicao-capa">E. E. Professora Ayna Torres | PIBID / UFSJ</p>
         <h1 class="titulo-capa">RELATÓRIO DA AÇÃO EXTENSIONISTA:<br>ENTRE O PLANEJAR, O FAZER E O SONHAR</h1>
-        <p class="subtitulo-capa">Caderno Didático: A Poesia do Movimento</p>
+        <p class="subtitulo-capa">A Poesia do Movimento</p>
         
-        <div class="box-imagem box-imagem-full" style="width: 100%;">
-            <span class="tag">Imagem de Capa (Cena Inteira)</span>
-            <span class="desc">Insira uma fotografia conceitual de alta qualidade. Esta é a vitrine do Caderno.</span>
+        <div class="box-imagem box-imagem-full">
+            <span class="tag">Espaço para a CAPA (Cena Inteira)</span>
+            <span class="desc">Insira aqui a fotografia de maior impacto do projeto. Pode ser o auditório montado, um salto perfeito ou a silhueta dos alunos contra a luz. Esta é a vitrine do Caderno.</span>
         </div>
         
-        <p class="texto" style="text-align: center; font-size: 1.2rem; max-width: 600px; margin-top: 2rem;">Minas Gerais, 2024</p>
+        <p class="texto" style="text-align: center; font-size: 1.2rem; margin-top: 2rem;">Minas Gerais, 2024</p>
     </div>
     ''', unsafe_allow_html=True)
 
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # =========================================================
+    # PÁGINA 2: FICHA CATALOGRÁFICA E SUMÁRIO
+    # =========================================================
     st.markdown('''
     <div class="ficha-catalografica">
         <div class="ficha-header">Dados Internacionais de Catalogação na Publicação (CIP)</div>
@@ -193,20 +203,12 @@ else:
     </div>
     ''', unsafe_allow_html=True)
 
-    st.markdown('<h1 style="text-align: center; font-size: 3rem; margin-top: 4rem; font-family: \'Playfair Display\', serif !important;">Sumário</h1>', unsafe_allow_html=True)
-    st.markdown('''
-    <div class="sumario-container">
-        <div class="sumario-item"><span class="sumario-titulo">Apresentação</span><span class="sumario-lider"></span><span class="sumario-pagina">05</span></div>
-        <div class="sumario-item"><span class="sumario-titulo">O Peso do Tempo e o Despertar do Corpo</span><span class="sumario-lider"></span><span class="sumario-pagina">07</span></div>
-        <div class="sumario-item"><span class="sumario-titulo">Vencendo o Medo do Desconhecido e o Preconceito</span><span class="sumario-lider"></span><span class="sumario-pagina">12</span></div>
-        <div class="sumario-item"><span class="sumario-titulo">Construindo o Coletivo: Paciência e Fraternidade</span><span class="sumario-lider"></span><span class="sumario-pagina">16</span></div>
-        <div class="sumario-item"><span class="sumario-titulo">A Semente que rola: O Futuro da GPT no Coletivo</span><span class="sumario-lider"></span><span class="sumario-pagina">22</span></div>
-        <div class="sumario-item"><span class="sumario-titulo">Agradecimentos Finais</span><span class="sumario-lider"></span><span class="sumario-pagina">25</span></div>
-    </div>
-    <div style="text-align: center; font-size: 2rem; color: #d4cbb8; margin-bottom: 5rem;">❦</div>
-    ''', unsafe_allow_html=True)
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo" style="margin-top: 2rem !important;">Apresentação</h2>', unsafe_allow_html=True)
+    # =========================================================
+    # PÁGINA 3: INTRODUÇÃO E CAPÍTULO 1
+    # =========================================================
+    st.markdown('<h2 class="subtitulo-capitulo" style="margin-top: 0 !important;">Apresentação</h2>', unsafe_allow_html=True)
     st.markdown('''
     <p class="texto dropcap">Neste caderno, datas e ponteiros do relógio importam menos do que as transformações que ocorreram nos espaços da Escola Estadual Professora Ayna Torres. A Ginástica para Todos (GPT) não foi apenas uma sequência de aulas práticas; foi um desafio, foi mudança, foi conflito e foi divertido demais!</p>
     <p class="texto">Deixamos os relatos cronológicos de lado para organizar nossas memórias através dos sentimentos, das barreiras quebradas e das conquistas coletivas.</p>
@@ -226,12 +228,31 @@ else:
     with col2:
         st.markdown('''
         <div class="box-imagem">
-            <span class="tag">Espaço para Fotografia</span>
-            <span class="desc">O contraste entre o pátio vazio e os primeiros alunos entrando no auditório, descobrindo os colchonetes.</span>
+            <span class="tag">Fotografia de Contraste</span>
+            <span class="desc">Insira a imagem que mostre o pátio vazio ou os primeiros alunos entrando curiosos no auditório para descobrir os colchonetes.</span>
         </div>
         ''', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">Vencendo o Medo do Desconhecido e o Preconceito</h2>', unsafe_allow_html=True)
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # =========================================================
+    # PÁGINA 4: GALERIA VISUAL EXCLUSIVA 1 (SEM TEXTO)
+    # =========================================================
+    st.markdown('<h2 style="text-align: center; font-style: italic; color: #8c3a3a !important;">— Galeria Visual I: O Despertar —</h2>', unsafe_allow_html=True)
+    
+    st.markdown('''
+        <div class="box-imagem box-imagem-full">
+            <span class="tag">Página Exclusiva para GIF / Vídeo em Loop</span>
+            <span class="desc">Aproveite esta página inteira para colocar um GIF ou Vídeo dinâmico (sem áudio) que mostre a ação acontecendo. Sem textos para roubar a atenção.</span>
+        </div>
+    ''', unsafe_allow_html=True)
+
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # =========================================================
+    # PÁGINA 5: CAPÍTULOS 2 E 3
+    # =========================================================
+    st.markdown('<h2 class="subtitulo-capitulo" style="margin-top: 0 !important;">Vencendo o Medo do Desconhecido e o Preconceito</h2>', unsafe_allow_html=True)
 
     st.markdown('''
     <div class="texto-colunas">
@@ -241,14 +262,12 @@ else:
     </div>
     ''', unsafe_allow_html=True)
 
-    col_v1, col_v2, col_v3 = st.columns([1, 2, 1])
-    with col_v2:
-        st.markdown('''
-        <div class="box-imagem">
-            <span class="tag">Espaço para Vídeo / GIF Curto</span>
-            <span class="desc">Alunos superando o medo inicial; o sorriso de alívio ao executar uma "estrelinha" ou um salto pela primeira vez.</span>
-        </div>
-        ''', unsafe_allow_html=True)
+    st.markdown('''
+    <div class="box-imagem">
+        <span class="tag">Vídeo / Foto Sequencial</span>
+        <span class="desc">Alunos superando o medo inicial; capture o sorriso de alívio ao executar uma "estrelinha" ou um salto pela primeira vez.</span>
+    </div>
+    ''', unsafe_allow_html=True)
 
     st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência e Fraternidade</h2>', unsafe_allow_html=True)
 
@@ -256,9 +275,9 @@ else:
 
     with col3:
         st.markdown('''
-        <div class="box-imagem">
-            <span class="tag">Espaço para Fotografia</span>
-            <span class="desc">O toque de cuidado; alunos auxiliando uns aos outros na execução das figuras acrobáticas em grupo, celebrando a fraternidade.</span>
+        <div class="box-imagem" style="height: 100%;">
+            <span class="tag">Retrato do Cuidado</span>
+            <span class="desc">O toque de apoio; alunos auxiliando uns aos outros na execução das figuras acrobáticas em grupo.</span>
         </div>
         ''', unsafe_allow_html=True)
 
@@ -269,20 +288,39 @@ else:
         <p class="texto">A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
         ''', unsafe_allow_html=True)
 
-    col5, col6 = st.columns([1.2, 1], gap="large")
-    with col5:
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # =========================================================
+    # PÁGINA 6: GALERIA VISUAL EXCLUSIVA 2 (MOSAICO)
+    # =========================================================
+    st.markdown('<h2 style="text-align: center; font-style: italic; color: #8c3a3a !important;">— Galeria Visual II: O Coletivo —</h2>', unsafe_allow_html=True)
+    
+    g_col1, g_col2 = st.columns(2, gap="large")
+    with g_col1:
         st.markdown('''
-        <p class="texto">As coreografias geométricas não foram apenas demonstrações físicas, mas a prova de que cada corpo, com seu próprio ritmo, é essencial para manter a figura acrobática em pé. A ginástica uniu diferenças em um só movimento, respeitando o espaço e o limite de cada um.</p>
+        <div class="box-imagem box-imagem-full" style="min-height: 400px !important;">
+            <span class="tag">Foto da Acrobacia</span>
+            <span class="desc">Coreografia geométrica: a prova de que cada corpo, com seu próprio ritmo, é essencial para manter a figura em pé.</span>
+        </div>
         ''', unsafe_allow_html=True)
-    with col6:
+    with g_col2:
         st.markdown('''
-        <div class="box-imagem" style="min-height: 250px !important;">
-            <span class="tag">Espaço para Fotografia</span>
+        <div class="box-imagem box-imagem-full" style="min-height: 400px !important;">
+            <span class="tag">Foto da Escuta</span>
             <span class="desc">A roda de conversa e o preenchimento reflexivo dos questionários (TCLEs), momento de escuta e conexão.</span>
         </div>
         ''', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">A Semente que rola: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
+    st.markdown('''
+    <p class="texto" style="text-align: center; margin-top: 1rem;">A ginástica uniu diferenças em um só movimento, respeitando o espaço e o limite de cada um.</p>
+    ''', unsafe_allow_html=True)
+
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # =========================================================
+    # PÁGINA 7: O FUTURO E A CONTRACAPA
+    # =========================================================
+    st.markdown('<h2 class="subtitulo-capitulo" style="margin-top: 0 !important;">A Semente que rola: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
 
     st.markdown('''
     <div class="texto-colunas">
@@ -292,26 +330,27 @@ else:
     </div>
     ''', unsafe_allow_html=True)
 
+    # A Contracapa
     st.markdown('''
-    <div class="box-imagem box-imagem-full" style="margin-top: 3rem !important;">
-        <span class="tag">Espaço para Fotografia Final</span>
-        <span class="desc">A grande foto em grupo do último encontro, com a equipe da universidade (Priscila e Cláudia) e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
-    </div>
-    ''', unsafe_allow_html=True)
-    
-    st.markdown('''
-    <div class="pos-textual-container">
-        <h1 style="font-family: 'Playfair Display', serif !important; font-size: 2.5rem !important; margin-bottom: 2rem !important; color: #1a1a1a !important;">Agradecimentos e Realização</h1>
-        <p class="texto" style="text-align: center; max-width: 800px; margin: 0 auto;">A execução deste projeto e a elaboração deste caderno só foram possíveis graças à parceria entre a <strong>Escola Estadual Professora Ayna Torres</strong> e a <strong>Universidade Federal de São João del-Rei (UFSJ)</strong>.</p>
-        <p class="texto" style="text-align: center; max-width: 800px; margin: 1rem auto;">Agradecemos profundamente ao Programa Institucional de Bolsas de Iniciação à Docência (PIBID / CAPES) pelo fomento à educação pública de qualidade, e a todos os alunos que permitiram que o movimento transformasse a sua rotina.</p>
-        <div style="margin-top: 3rem; font-size: 2rem; color: #d4cbb8;">🙔 🙗</div>
+    <div class="contracapa-container">
+        <p class="frase-contracapa">"Apresentar a poesia da GPT para a comunidade é a forma definitiva de mostrar que a ginástica é verdadeiramente PARA TODOS."</p>
+        
+        <div class="box-imagem box-imagem-full" style="width: 100%;">
+            <span class="tag">A GRANDE FOTO FINAL (CONTRACAPA)</span>
+            <span class="desc">Insira a grande foto em grupo do último encontro, com a equipe da universidade (Priscila e Cláudia) e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
+        </div>
+        
+        <p class="texto" style="text-align: center; margin-top: 3rem; color: #888888 !important; font-size: 1rem !important;">
+            A execução deste projeto foi possível graças à parceria entre a Escola Estadual Professora Ayna Torres, a Universidade Federal de São João del-Rei (UFSJ) e o Programa Institucional de Bolsas de Iniciação à Docência (PIBID / CAPES).
+        </p>
     </div>
     ''', unsafe_allow_html=True)
 
+    # Botão Lado B (Anexo Confidencial)
     st.markdown('''
     <div class="caixa-secreta">
         <p style="color: #8c3a3a !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; margin-bottom: 5px !important; font-weight: bold !important;">[ATENÇÃO: ANEXO NÃO OFICIAL DETECTADO]</p>
-        <p style="color: #555555 !important; font-style: italic !important; font-size: 1rem !important; margin-bottom: 20px !important;">Os registros oficiais terminam aqui. No entanto, um dossiê adicional escrito nos bastidores foi anexado a este caderno.</p>
+        <p style="color: #555555 !important; font-style: italic !important; font-size: 1rem !important; margin-bottom: 20px !important;">Um dossiê adicional escrito nos bastidores foi ocultado neste documento.</p>
     ''', unsafe_allow_html=True)
     st.button("ACESSAR ARQUIVO CONFIDENCIAL: A VERDADEIRA HISTÓRIA DO PORTÃO", on_click=alternar_fita)
     st.markdown('</div>', unsafe_allow_html=True)
