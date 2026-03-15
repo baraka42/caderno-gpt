@@ -1,19 +1,16 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
     page_title="Caderno Didático: GPT",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- CONTROLE DE MODO NOTURNO ---
 col_vazia, col_toggle = st.columns([8, 2])
 with col_toggle:
-    modo_noturno = st.toggle("🌙 Modo Noturno")
+    modo_noturno = st.toggle("Modo Noturno")
 
-# --- CONTROLE DE NAVEGAÇÃO E SCROLL ---
 if 'mundo_invertido' not in st.session_state:
     st.session_state.mundo_invertido = False
 if 'reset_scroll' not in st.session_state:
@@ -27,9 +24,7 @@ if st.session_state.reset_scroll:
     components.html("<script>window.parent.document.querySelector('.main').scrollTo({top: 0, behavior: 'smooth'});</script>", height=0)
     st.session_state.reset_scroll = False
 
-# --- VARIÁVEIS DE TEMA (MODO CLARO / NOTURNO) ---
 if modo_noturno:
-    # Tema Escuro
     bg_app = "#121212"
     bg_paper = "#1e1e1e"
     color_text = "#e0e0e0"
@@ -37,11 +32,9 @@ if modo_noturno:
     color_accent = "#ff6b6b"
     color_border = "#444444"
     bg_img_box = "#2a2a2a"
-    # Dossiê (Lado B) Noturno
     bg_dossie = "#1a1a1a"
     color_dossie_text = "#cccccc"
 else:
-    # Tema Claro
     bg_app = "#e8e6df"
     bg_paper = "#fffdf8"
     color_text = "#2c2c2c"
@@ -49,12 +42,11 @@ else:
     color_accent = "#8c3a3a"
     color_border = "#eae5d9"
     bg_img_box = "#fcfbf7"
-    # Dossiê (Lado B) Claro
     bg_dossie = "#f4ecd8"
     color_dossie_text = "#2b2b2b"
 
 # ==============================================================================
-# 📁 LADO B: O GUIA DO PROFESSOR (Dossiê Confidencial)
+# LADO B: O GUIA DO PROFESSOR (Dossiê Confidencial)
 # ==============================================================================
 if st.session_state.mundo_invertido:
     st.markdown(f"""
@@ -83,7 +75,6 @@ if st.session_state.mundo_invertido:
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     
-    /* Responsividade Lado B */
     @media (max-width: 768px) {{
         .block-container {{ padding: 2rem 1.5rem !important; }}
         .carimbo {{ font-size: 2rem !important; }}
@@ -117,7 +108,7 @@ if st.session_state.mundo_invertido:
     st.button("FECHAR DOSSIÊ E VOLTAR AO RELATÓRIO", on_click=alternar_dimensao)
 
 # ==============================================================================
-# 📖 LADO A: O CADERNO DIDÁTICO (A Poesia do Movimento)
+# LADO A: O CADERNO DIDÁTICO (A Poesia do Movimento)
 # ==============================================================================
 else:
     st.markdown(f"""
@@ -141,15 +132,14 @@ else:
     
     .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; }}
     
-    /* ESPAÇOS PARA FOTOGRAFIA - PROPORÇÕES REAIS DE CELULAR */
     .box-imagem-paisagem {{
-        aspect-ratio: 16 / 9; /* Formato de celular deitado / YouTube */
+        aspect-ratio: 16 / 9;
         background-color: {bg_img_box} !important; border: 2px dashed #999 !important; border-radius: 4px !important;
         display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important;
         width: 100% !important; margin: 2rem 0 !important; padding: 20px !important;
     }}
     .box-imagem-retrato {{
-        aspect-ratio: 9 / 16; /* Formato de celular em pé / Stories / Reels */
+        aspect-ratio: 9 / 16;
         background-color: {bg_img_box} !important; border: 2px dashed #999 !important; border-radius: 4px !important;
         display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important;
         width: 100% !important; margin: 2rem 0 !important; padding: 20px !important;
@@ -158,7 +148,6 @@ else:
     .tag-midia {{ font-family: sans-serif !important; text-transform: uppercase !important; font-size: 0.9rem !important; font-weight: bold !important; color: #888 !important; margin-bottom: 10px !important; text-align: center !important;}}
     .desc-midia {{ font-style: italic !important; color: {color_text} !important; font-size: 1.1rem !important; text-align: center !important; max-width: 80% !important;}}
     
-    /* ESTILO DA FICHA CATALOGRÁFICA */
     .ficha-catalografica-container {{
         font-family: 'Times New Roman', Times, serif !important;
         color: {color_text} !important;
@@ -182,14 +171,12 @@ else:
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
     
-    /* RESPONSIVIDADE PARA TABLETS E CELULARES */
     @media (max-width: 768px) {{
         .block-container {{ padding: 2rem 1rem !important; }}
         .titulo-capa {{ font-size: 2.2rem !important; }}
         .subtitulo-capitulo {{ font-size: 1.8rem !important; }}
         .texto {{ font-size: 1.1rem !important; }}
         .dropcap::first-letter {{ font-size: 4rem !important; }}
-        /* Força elementos lado a lado a caírem para a linha de baixo em telas pequenas */
         div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} 
         .ficha-box {{ flex-direction: column; }}
         .ficha-cutter {{ margin-bottom: 1rem; }}
@@ -197,62 +184,58 @@ else:
 </style>
 """, unsafe_allow_html=True)
 
-    # --- PÁGINA 1: CAPA ---
     st.markdown(f'<p style="text-align:center; letter-spacing: 4px; color: {color_accent} !important; font-weight:bold;">UFVJM | PIBID</p>', unsafe_allow_html=True)
     st.markdown('<h1 class="titulo-capa">RELATÓRIO DA AÇÃO EXTENSIONISTA:<br>ENTRE O PLANEJAR, O FAZER E O SONHAR</h1>', unsafe_allow_html=True)
     
     st.markdown('''
-    <div class="box-imagem-paisagem">
-        <span class="tag-midia">FOTOGRAFIA / CAPA (16:9 HORIZONTAL)</span>
-        <span class="desc-midia">Insira aqui a fotografia de maior impacto do projeto.</span>
+<div class="box-imagem-paisagem">
+    <span class="tag-midia">FOTOGRAFIA / CAPA (16:9 HORIZONTAL)</span>
+    <span class="desc-midia">Insira aqui a fotografia de maior impacto do projeto.</span>
+</div>
+''', unsafe_allow_html=True)
+
+    st.markdown('''
+<div class="ficha-catalografica-container">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <strong class="ficha-texto">Organizadores</strong><br>
+        <span class="ficha-texto">Nome Sobrenome</span><br>
+        <span class="ficha-texto">Nome Sobrenome</span><br>
+        <span class="ficha-texto">Nome Sobrenome</span><br><br>
+        <strong class="ficha-texto">Fotografia</strong><br>
+        <span class="ficha-texto">Nome Sobrenome</span><br>
+        <span class="ficha-texto">Nome Sobrenome</span><br><br>
+        <strong class="ficha-texto">Diagramação</strong><br>
+        <span class="ficha-texto">Nome Sobrenome</span>
     </div>
-    ''', unsafe_allow_html=True)
 
-    # --- PÁGINA 2: FICHA CATALOGRÁFICA (FORMATO IMAGEM) ---
-    st.markdown(f'''
-    <div class="ficha-catalografica-container">
-        <div style="text-align: center; margin-bottom: 2rem;">
-            <strong class="ficha-texto">Organizadores</strong><br>
-            <span class="ficha-texto">Carlos Silva</span><br>
-            <span class="ficha-texto">Mariana Costa</span><br>
-            <span class="ficha-texto">Renato Mendes</span><br><br>
-            <strong class="ficha-texto">Fotografia</strong><br>
-            <span class="ficha-texto">Lucas Almeida</span><br>
-            <span class="ficha-texto">Beatriz Souza</span><br><br>
-            <strong class="ficha-texto">Diagramação</strong><br>
-            <span class="ficha-texto">Felipe Rocha</span>
-        </div>
-
-        <div style="text-align: center; font-size: 0.95rem;" class="ficha-texto">
-            Elaborado com os dados fornecidos pelo(a) autor(a).
-        </div>
-        
-        <div class="ficha-box">
-            <div class="ficha-cutter" style="width: 50px; font-size: 0.9rem;">P745</div>
-            <div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
-                <span class="ficha-texto">A Poesia do Movimento / organizadores Carlos Silva, Mariana Costa, Renato Mendes; fotografia Lucas Almeida, Beatriz Souza; diagramação Felipe Rocha. - Diamantina: UFVJM, 2024.</span><br><br>
-                <span class="ficha-texto">Inclui bibliografia</span><br><br>
-                <span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
-                <span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Silva, Carlos. II. Costa, Mariana. III. Mendes, Renato. IV. Almeida, Lucas. V. Rocha, Felipe. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
-                <div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
-            </div>
-        </div>
-        
-        <div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
-            <span class="ficha-texto">Ficha Catalográfica – Serviço de Bibliotecas/UFVJM</span><br>
-            <span class="ficha-texto">Bibliotecária Juliana Ribeiro – CRB-6/1234</span>
+    <div style="text-align: center; font-size: 0.95rem;" class="ficha-texto">
+        Elaborado com os dados fornecidos pelo(a) autor(a).
+    </div>
+    
+    <div class="ficha-box">
+        <div class="ficha-cutter" style="width: 50px; font-size: 0.9rem;">P745</div>
+        <div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
+            <span class="ficha-texto">A Poesia do Movimento / organizadores Nome Sobrenome, Nome Sobrenome, Nome Sobrenome; fotografia Nome Sobrenome, Nome Sobrenome; diagramação Nome Sobrenome. - Diamantina: UFVJM, 2024.</span><br><br>
+            <span class="ficha-texto">Inclui bibliografia</span><br><br>
+            <span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
+            <span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Sobrenome, Nome. II. Sobrenome, Nome. III. Sobrenome, Nome. IV. Sobrenome, Nome. V. Sobrenome, Nome. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
+            <div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
         </div>
     </div>
-    ''', unsafe_allow_html=True)
+    
+    <div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
+        <span class="ficha-texto">Ficha Catalográfica – Serviço de Bibliotecas/UFVJM</span><br>
+        <span class="ficha-texto">Bibliotecária Nome Sobrenome – CRB-6/1234</span>
+    </div>
+</div>
+''', unsafe_allow_html=True)
 
-    # --- INTRODUÇÃO ---
     st.markdown('<h2 class="subtitulo-capitulo">Apresentação</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto dropcap">Neste caderno, datas e ponteiros do relógio importam menos do que as transformações que ocorreram nos espaços da Escola Estadual Professora Ayna Torres. A Ginástica para Todos (GPT) não foi apenas uma sequência de aulas práticas; foi um desafio, foi mudança, foi conflito e foi divertido demais!</p>
 <p class="texto">Deixamos os relatos cronológicos de lado para organizar nossas memórias através dos sentimentos, das barreiras quebradas e das conquistas coletivas.</p>
 ''', unsafe_allow_html=True)
 
-    # --- CAPÍTULO 1 ---
     st.markdown('<h2 class="subtitulo-capitulo">O Peso do Tempo e o Despertar do Corpo</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1], gap="large")
@@ -264,13 +247,12 @@ else:
 ''', unsafe_allow_html=True)
     with col2:
         st.markdown('''
-        <div class="box-imagem-paisagem">
-            <span class="tag-midia">FOTO (16:9 HORIZONTAL)</span>
-            <span class="desc-midia">O contraste entre o pátio vazio e os primeiros alunos entrando no auditório, descobrindo os colchonetes.</span>
-        </div>
-        ''', unsafe_allow_html=True)
+<div class="box-imagem-paisagem">
+    <span class="tag-midia">FOTO (16:9 HORIZONTAL)</span>
+    <span class="desc-midia">O contraste entre o pátio vazio e os primeiros alunos entrando no auditório, descobrindo os colchonetes.</span>
+</div>
+''', unsafe_allow_html=True)
 
-    # --- CAPÍTULO 2 ---
     st.markdown('<h2 class="subtitulo-capitulo">Vencendo o Medo do Desconhecido e o Preconceito</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Talvez a maior acrobacia realizada neste projeto não tenha sido física. O colchonete revelou que muitos de nós somos prisioneiros dos nossos próprios medos. Os alunos descobriram que o bloqueio mental é o verdadeiro causador de lesões: quando a gente evita o movimento por medo de se machucar, acaba se machucando.</p>
@@ -279,13 +261,12 @@ else:
 ''', unsafe_allow_html=True)
     
     st.markdown('''
-    <div class="box-imagem-paisagem">
-        <span class="tag-midia">VÍDEO/FOTO (16:9 HORIZONTAL)</span>
-        <span class="desc-midia">Alunos superando o medo inicial; o sorriso de alívio ao executar uma "estrelinha" ou um salto pela primeira vez.</span>
-    </div>
-    ''', unsafe_allow_html=True)
+<div class="box-imagem-paisagem">
+    <span class="tag-midia">VÍDEO/FOTO (16:9 HORIZONTAL OU 9:16 VERTICAL)</span>
+    <span class="desc-midia">Alunos superando o medo inicial; o sorriso de alívio ao executar uma "estrelinha" ou um salto pela primeira vez.</span>
+</div>
+''', unsafe_allow_html=True)
 
-    # --- CAPÍTULO 3 ---
     st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência e Fraternidade</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
@@ -296,20 +277,19 @@ else:
     col3, col4 = st.columns(2, gap="large")
     with col3:
         st.markdown('''
-        <div class="box-imagem-retrato">
-            <span class="tag-midia">FOTO (9:16 VERTICAL)</span>
-            <span class="desc-midia">O toque de cuidado; alunos auxiliando uns aos outros na execução das figuras acrobáticas em grupo, celebrando a fraternidade.</span>
-        </div>
-        ''', unsafe_allow_html=True)
+<div class="box-imagem-retrato">
+    <span class="tag-midia">FOTO (9:16 VERTICAL)</span>
+    <span class="desc-midia">O toque de cuidado; alunos auxiliando uns aos outros na execução das figuras acrobáticas em grupo, celebrando a fraternidade.</span>
+</div>
+''', unsafe_allow_html=True)
     with col4:
         st.markdown('''
-        <div class="box-imagem-retrato">
-            <span class="tag-midia">FOTO (9:16 VERTICAL)</span>
-            <span class="desc-midia">A roda de conversa e o preenchimento reflexivo dos questionários (TCLEs), momento de escuta e conexão.</span>
-        </div>
-        ''', unsafe_allow_html=True)
+<div class="box-imagem-retrato">
+    <span class="tag-midia">FOTO (9:16 VERTICAL)</span>
+    <span class="desc-midia">A roda de conversa e o preenchimento reflexivo dos questionários (TCLEs), momento de escuta e conexão.</span>
+</div>
+''', unsafe_allow_html=True)
 
-    # --- CAPÍTULO 4 ---
     st.markdown('<h2 class="subtitulo-capitulo">A Semente que rola: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">O fim do projeto é, na verdade, um começo. Transformados pela flexibilidade que ganharam no corpo e na mente, os alunos sonham mais alto.</p>
@@ -318,13 +298,12 @@ else:
 ''', unsafe_allow_html=True)
 
     st.markdown('''
-    <div class="box-imagem-paisagem">
-        <span class="tag-midia">FOTO FINAL (16:9 HORIZONTAL)</span>
-        <span class="desc-midia">A grande foto em grupo do último encontro, com a equipe da universidade e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
-    </div>
-    ''', unsafe_allow_html=True)
+<div class="box-imagem-paisagem">
+    <span class="tag-midia">FOTO FINAL (16:9 HORIZONTAL)</span>
+    <span class="desc-midia">A grande foto em grupo do último encontro, com a equipe da universidade (Priscila e Cláudia) e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
+</div>
+''', unsafe_allow_html=True)
 
-    # --- BOTÃO LADO B ---
     st.markdown(f'<div style="margin-top: 6rem; text-align: center; border-top:1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
     st.button("ACESSAR ANEXO CONFIDENCIAL", on_click=alternar_dimensao)
     st.markdown('</div>', unsafe_allow_html=True)
