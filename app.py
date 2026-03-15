@@ -67,7 +67,7 @@ if st.session_state.mundo_invertido:
     
     h1, h2, h3, p, span, div, li {{ color: {color_dossie_text} !important; font-family: 'Special Elite', monospace !important; background: transparent !important; }}
     
-    .dossie-texto {{ font-size: 1.25rem !important; line-height: 1.8 !important; text-align: justify !important; margin-bottom: 1.5rem !important; }}
+    .dossie-texto {{ font-size: 1.25rem !important; line-height: 1.8 !important; text-align: justify !important; margin-bottom: 1.5rem !important; text-indent: 2rem !important;}}
     
     .carimbo {{ color: #b32424 !important; border: 4px solid #b32424 !important; padding: 10px 20px !important; font-size: 3rem !important; text-transform: uppercase !important; transform: rotate(-3deg); display: inline-block !important; margin-bottom: 2rem !important; opacity: 0.8 !important;}}
     .marca-texto {{ background-color: #e6d97e !important; color: #111 !important; padding: 0 5px !important; }}
@@ -82,31 +82,31 @@ if st.session_state.mundo_invertido:
     @media (max-width: 768px) {{
         .block-container {{ padding: 2rem 1.5rem !important; border: 2px solid {color_border} !important;}}
         .carimbo {{ font-size: 2rem !important; }}
-        .dossie-texto {{ font-size: 1.1rem !important; }}
+        .dossie-texto {{ font-size: 1.1rem !important; text-indent: 1.5rem !important;}}
     }}
 </style>
 """, unsafe_allow_html=True)
 
     st.markdown('<div style="text-align:center;"><div class="carimbo">Arquivo Confidencial</div></div>', unsafe_allow_html=True)
-    st.markdown('<h2 style="border-bottom: 2px solid #b32424; padding-bottom:10px;">Capítulo 1: O Portão</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 style="border-bottom: 2px solid #b32424; padding-bottom:10px; margin-bottom: 2rem;">Capítulo 1: O Portão</h2>', unsafe_allow_html=True)
     
     st.markdown('''
 <p class="dossie-texto">A maioria das pessoas vive sem saber de um segredo essencial: o peso das coisas não é o mesmo em todos os lugares.</p>
 <p class="dossie-texto">Quem trabalha em Escola sabe disso. E eu, Professor de Educação Física, deveria até saber mais que todo mundo. Eu estava prestes a testemunhar, mais uma vez, as consequências desse fenômeno.</p>
 <p class="dossie-texto">Mas antes de contar o que aconteceu, preciso explicar uma coisa.</p>
-<p class="dossie-texto">O "Ranca" não é uma simples brincadeira. Não é uma pelada desorganizada. O Ranca é uma força da natureza. <span class="marca-texto">O Ranca não tem MÃE!</span> É Um evento espontâneo com poderes magnéticos, capaz de atrair corpos desavisados e os envolver num ritual de suor, gritos e dedões do pé dilacerados. <span class="censura">“Toca essa bola, C@#$%%0!!!”</span></p>
+<p class="dossie-texto" style="text-indent: 0 !important;">O "Ranca" não é uma simples brincadeira. Não é uma pelada desorganizada. O Ranca é uma força da natureza. <span class="marca-texto">O Ranca não tem MÃE!</span> É Um evento espontâneo com poderes magnéticos, capaz de atrair corpos desavisados e os envolver num ritual de suor, gritos e dedões do pé dilacerados. <span class="censura">“Toca essa bola, C@#$%%0!!!”</span></p>
 <p class="dossie-texto">Sabendo disso ou não, lá fui eu.</p>
 <p class="dossie-texto">Era o primeiro dia de tentativa de apresentar o projeto de Ginástica Para Todos para os alunos do Integral. Fui de sala em sala no horário do almoço, quando os alunos ainda não tinham terminado de comer, além dos que encontrava pelos corredores. O plano era simples: convidar todo mundo para ir até o auditório, fazer uma demonstração, explicar o que é a Ginástica Para Todos e tentar conquistar aquele povo para a nova prática. Porque nada conquista mais um adolescente do ensino integRal do que interromper a única pausa que ele tem no dia para falar sobre atividade física.</p>
 <p class="dossie-texto">Fui. Salas visitadas, alunos abordados, convites feitos. Tudo dentro do planejado. Dialógico.</p>
-<p class="dossie-texto" style="text-align: center; font-size: 1.5rem; margin: 3rem 0; font-weight:bold;">Às onze e meia da manhã do dia dez de março, testemunhei o inevitável.</p>
-<p class="dossie-texto" style="text-align: center; font-size: 2rem; color: #b32424 !important; font-weight:bold; transform: rotate(1deg);">Alguém abriu o portão da quadra.</p>
+<p class="dossie-texto" style="text-align: center; text-indent: 0 !important; font-size: 1.5rem; margin: 3rem 0; font-weight:bold;">Às onze e meia da manhã do dia dez de março, testemunhei o inevitável.</p>
+<p class="dossie-texto" style="text-align: center; text-indent: 0 !important; font-size: 2rem; color: #b32424 !important; font-weight:bold; transform: rotate(1deg);">Alguém abriu o portão da quadra.</p>
 <p class="dossie-texto">Não foi um evento grandioso. Não teve anúncio, não teve alarde. Foi só um portão se abrindo. Mas, para quem tem intimidade com escola, sabe que aquilo é equivalente ao sinal do recreio em dia que a merenda é cachorro-quente. Mais que depressa, a maioria dos alunos bateu em retirada. Não foi desinteresse, não foi maldade. Foi pura e simplesmente a força da gravidade local agindo. Eles correram para a quadra em busca de outra dose para saciar a coceira das pernas. O Ranca.</p>
 <p class="dossie-texto">Lá no auditório, esperei. E esperei. E continuei esperando.</p>
 <p class="dossie-texto">No final, alguns poucos alunos restaram. Não eram necessariamente os mais interessados em ginástica. Eram, muito provavelmente, os que sentiram vergonha de me deixar falando sozinho. Eles ficaram até o fim, ouviram a explicação inteira, nunca tinha testemunhado tamanha delicadeza, alguns até acenaram com a cabeça em momentos estratégicos.</p>
 <p class="dossie-texto">Lá fora, no chão quente da quadra, o Ranca rugia.</p>
 <p class="dossie-texto">E eu entendi, naquele dia, que o universo tem suas próprias leis. Você pode planejar, convidar, explicar, demonstrar. Pode ir de sala em sala no horário do almoço, abordar aluno por aluno nos corredores. Pode ser o sujeito mais otimista e sonhador da face da Terra.</p>
 <p class="dossie-texto">Mas se alguém abrir o portão da quadra, não adianta.</p>
-<p class="dossie-texto" style="font-size:2.5rem; text-align: center; margin-top: 3rem; color: #b32424 !important; font-weight:bold;">O Ranca é inevitável!</p>
+<p class="dossie-texto" style="font-size:2.5rem; text-indent: 0 !important; text-align: center; margin-top: 3rem; color: #b32424 !important; font-weight:bold;">O Ranca é inevitável!</p>
 ''', unsafe_allow_html=True)
 
     st.button("FECHAR DOSSIÊ E VOLTAR AO RELATÓRIO", on_click=alternar_dimensao)
@@ -133,10 +133,15 @@ else:
     .quebra-pagina {{ margin: 6rem 0; border: none; border-top: 2px dashed {color_border}; opacity: 0.5; }}
 
     .titulo-capa {{ font-size: 3.5rem !important; font-weight: 700 !important; text-align: center !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }}
-    .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; font-style: italic !important;}}
+    
+    /* AUMENTO DA MARGEM INFERIOR DOS TÍTULOS PARA DAR RESPIRO */
+    .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}}
+    
     .dropcap::first-letter {{ float: left !important; font-size: 5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: {color_accent} !important; font-weight: 700 !important; }}
     
-    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; }}
+    /* PADRONIZAÇÃO DE PARÁGRAFOS COM RECUO DE PRIMEIRA LINHA */
+    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; text-indent: 2.5rem !important; }}
+    .dropcap {{ text-indent: 0 !important; }} /* Remove recuo onde há dropcap */
     
     .box-imagem-paisagem {{
         aspect-ratio: 16 / 9; 
@@ -152,7 +157,7 @@ else:
     }}
     
     .tag-midia {{ font-family: sans-serif !important; text-transform: uppercase !important; font-size: 0.9rem !important; font-weight: bold !important; color: #888 !important; margin-bottom: 10px !important; text-align: center !important;}}
-    .desc-midia {{ font-style: italic !important; color: {color_text} !important; font-size: 1.1rem !important; text-align: center !important; max-width: 80% !important;}}
+    .desc-midia {{ font-style: italic !important; color: {color_text} !important; font-size: 1.1rem !important; text-align: center !important; max-width: 80% !important; text-indent: 0 !important;}}
     
     .ficha-catalografica-container {{
         font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important;
@@ -161,6 +166,9 @@ else:
     .ficha-box {{ border: 1px solid {color_text} !important; padding: 1.5rem; display: flex; margin-top: 1.5rem; margin-bottom: 1.5rem; }}
     .ficha-texto {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; }}
     
+    .epigrafe-texto {{ font-family: 'Playfair Display', serif !important; font-size: 1.6rem !important; font-style: italic !important; color: {color_accent} !important; line-height: 1.6 !important; text-align: center !important; margin-bottom: 1rem !important; text-indent: 0 !important;}}
+    .epigrafe-autor {{ font-family: 'Lora', serif !important; font-size: 1.2rem !important; color: {color_text} !important; text-align: right !important; padding-right: 15% !important; text-indent: 0 !important;}}
+
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
@@ -169,16 +177,17 @@ else:
         .block-container {{ padding: 2rem 1rem !important; border: 2px solid {color_border} !important; }}
         .titulo-capa {{ font-size: 2.2rem !important; }}
         .subtitulo-capitulo {{ font-size: 1.8rem !important; }}
-        .texto {{ font-size: 1.1rem !important; }}
+        .texto {{ font-size: 1.1rem !important; text-indent: 1.5rem !important; }}
         .dropcap::first-letter {{ font-size: 4rem !important; }}
         div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} 
         .ficha-box {{ flex-direction: column; }}
+        .epigrafe-texto {{ font-size: 1.3rem !important; }}
     }}
 </style>
 """, unsafe_allow_html=True)
 
     # --- PÁGINA 1: CAPA ---
-    st.markdown(f'<p style="text-align:center; letter-spacing: 4px; color: {color_accent} !important; font-weight:bold;">UFVJM | PIBID</p>', unsafe_allow_html=True)
+    st.markdown(f'<p style="text-align:center; letter-spacing: 4px; color: {color_accent} !important; font-weight:bold; margin-bottom: 2rem;">UFVJM | PIBID</p>', unsafe_allow_html=True)
     st.markdown('<h1 class="titulo-capa">RELATÓRIO DA AÇÃO EXTENSIONISTA:<br>ENTRE O PLANEJAR, O FAZER E O SONHAR</h1>', unsafe_allow_html=True)
     
     st.markdown('''
@@ -190,7 +199,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 2: FICHA CATALOGRÁFICA (SEM RECUOS PARA EVITAR BLOCO DE CÓDIGO) ---
+    # --- PÁGINA 2: FICHA CATALOGRÁFICA ---
     st.markdown("""
 <div class="ficha-catalografica-container">
 <div style="text-align: center; margin-bottom: 2rem;">
@@ -224,7 +233,28 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 3: INTRODUÇÃO ---
+    # --- PÁGINA 3: EPÍGRAFE ---
+    st.markdown('''
+<div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
+    <div class="box-imagem-paisagem" style="margin-bottom: 3rem;">
+        <span class="tag-midia">FOTOGRAFIA (16:9 HORIZONTAL)</span>
+        <span class="desc-midia">Fotografia de respiro visual antes da Apresentação.</span>
+    </div>
+    
+    <div style="width: 100%;">
+        <p class="epigrafe-texto">
+            "Enquanto o tempo acelera e pede pressa<br>
+            Eu me recuso, faço hora, vou na valsa<br>
+            A vida é tão rara"
+        </p>
+        <p class="epigrafe-autor">— Paciência, Lenine</p>
+    </div>
+</div>
+''', unsafe_allow_html=True)
+
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 4: INTRODUÇÃO ---
     st.markdown('<h2 class="subtitulo-capitulo">Apresentação</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto dropcap">Neste caderno, datas e ponteiros do relógio importam menos do que as transformações que ocorreram nos espaços da Escola Estadual Professora Ayna Torres. A Ginástica para Todos (GPT) não foi apenas uma sequência de aulas práticas; foi um desafio, foi mudança, foi conflito e foi divertido demais!</p>
@@ -233,7 +263,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 4: CAPÍTULO 1 ---
+    # --- PÁGINA 5: CAPÍTULO 1 ---
     st.markdown('<h2 class="subtitulo-capitulo">O Peso do Tempo e o Despertar do Corpo</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1], gap="large")
@@ -253,7 +283,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 5: GALERIA VISUAL 1 ---
+    # --- PÁGINA 6: GALERIA VISUAL 1 ---
     st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: A Descoberta</h3>', unsafe_allow_html=True)
     st.markdown('''
 <div class="box-imagem-paisagem">
@@ -264,7 +294,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 6: CAPÍTULO 2 ---
+    # --- PÁGINA 7: CAPÍTULO 2 ---
     st.markdown('<h2 class="subtitulo-capitulo">Vencendo o Medo do Desconhecido e o Preconceito</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Talvez a maior acrobacia realizada neste projeto não tenha sido física. O colchonete revelou que muitos de nós somos prisioneiros dos nossos próprios medos. Os alunos descobriram que o bloqueio mental é o verdadeiro causador de lesões: quando a gente evita o movimento por medo de se machucar, acaba se machucando.</p>
@@ -281,7 +311,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 7: CAPÍTULO 3 ---
+    # --- PÁGINA 8: CAPÍTULO 3 ---
     st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência e Fraternidade</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
@@ -307,7 +337,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 8: GALERIA VISUAL 2 ---
+    # --- PÁGINA 9: GALERIA VISUAL 2 ---
     st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: O Movimento Coletivo</h3>', unsafe_allow_html=True)
     
     g_col1, g_col2 = st.columns(2, gap="large")
@@ -328,7 +358,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- PÁGINA 9: CAPÍTULO 4 ---
+    # --- PÁGINA 10: CAPÍTULO 4 ---
     st.markdown('<h2 class="subtitulo-capitulo">A Semente que rola: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">O fim do projeto é, na verdade, um começo. Transformados pela flexibilidade que ganharam no corpo e na mente, os alunos sonham mais alto.</p>
