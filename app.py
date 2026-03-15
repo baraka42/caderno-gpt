@@ -1,16 +1,19 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
+# --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
     page_title="Caderno Didático: GPT",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
+# --- CONTROLE DE MODO NOTURNO ---
 col_vazia, col_toggle = st.columns([8, 2])
 with col_toggle:
     modo_noturno = st.toggle("Modo Noturno")
 
+# --- CONTROLE DE NAVEGAÇÃO E SCROLL ---
 if 'mundo_invertido' not in st.session_state:
     st.session_state.mundo_invertido = False
 if 'reset_scroll' not in st.session_state:
@@ -24,13 +27,14 @@ if st.session_state.reset_scroll:
     components.html("<script>window.parent.document.querySelector('.main').scrollTo({top: 0, behavior: 'smooth'});</script>", height=0)
     st.session_state.reset_scroll = False
 
+# --- VARIÁVEIS DE TEMA ---
 if modo_noturno:
     bg_app = "#121212"
     bg_paper = "#1e1e1e"
     color_text = "#e0e0e0"
     color_title = "#ffffff"
     color_accent = "#ff6b6b"
-    color_border = "#444444"
+    color_border = "#555555"
     bg_img_box = "#2a2a2a"
     bg_dossie = "#1a1a1a"
     color_dossie_text = "#cccccc"
@@ -40,7 +44,7 @@ else:
     color_text = "#2c2c2c"
     color_title = "#1a1a1a"
     color_accent = "#8c3a3a"
-    color_border = "#eae5d9"
+    color_border = "#d4cbb8"
     bg_img_box = "#fcfbf7"
     bg_dossie = "#f4ecd8"
     color_dossie_text = "#2b2b2b"
@@ -56,9 +60,9 @@ if st.session_state.mundo_invertido:
     .stApp {{ background-color: {bg_app} !important; }}
     
     .block-container {{
-        max-width: 900px !important; padding: 3rem 4rem !important;
+        max-width: 900px !important; padding: 4rem 5rem !important;
         background-color: {bg_dossie} !important;
-        border: 1px solid {color_border} !important; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+        border: 3px solid {color_border} !important; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
     }}
     
     h1, h2, h3, p, span, div, li {{ color: {color_dossie_text} !important; font-family: 'Special Elite', monospace !important; background: transparent !important; }}
@@ -76,7 +80,7 @@ if st.session_state.mundo_invertido:
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     
     @media (max-width: 768px) {{
-        .block-container {{ padding: 2rem 1.5rem !important; }}
+        .block-container {{ padding: 2rem 1.5rem !important; border: 2px solid {color_border} !important;}}
         .carimbo {{ font-size: 2rem !important; }}
         .dossie-texto {{ font-size: 1.1rem !important; }}
     }}
@@ -118,28 +122,30 @@ else:
     .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
     
     .block-container {{
-        max-width: 1150px !important; padding: 5rem !important; background-color: {bg_paper} !important;
-        box-shadow: 0 25px 70px rgba(0,0,0,0.1) !important; border-left: 1px solid {color_border} !important; border-right: 1px solid {color_border} !important;
+        max-width: 1150px !important; padding: 6rem 5rem !important; background-color: {bg_paper} !important;
+        box-shadow: 0 25px 70px rgba(0,0,0,0.1) !important; border: 3px solid {color_border} !important;
         transition: background-color 0.3s;
     }}
     
     h1, h2, h3, h4 {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; background: transparent !important; }}
     p, span, div, li {{ color: {color_text} !important; font-family: 'Lora', serif !important; background: transparent !important; }}
 
+    .quebra-pagina {{ margin: 6rem 0; border: none; border-top: 2px dashed {color_border}; opacity: 0.5; }}
+
     .titulo-capa {{ font-size: 3.5rem !important; font-weight: 700 !important; text-align: center !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }}
-    .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 4rem !important; font-style: italic !important;}}
+    .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; font-style: italic !important;}}
     .dropcap::first-letter {{ float: left !important; font-size: 5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: {color_accent} !important; font-weight: 700 !important; }}
     
     .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; }}
     
     .box-imagem-paisagem {{
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 16 / 9; 
         background-color: {bg_img_box} !important; border: 2px dashed #999 !important; border-radius: 4px !important;
         display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important;
         width: 100% !important; margin: 2rem 0 !important; padding: 20px !important;
     }}
     .box-imagem-retrato {{
-        aspect-ratio: 9 / 16;
+        aspect-ratio: 9 / 16; 
         background-color: {bg_img_box} !important; border: 2px dashed #999 !important; border-radius: 4px !important;
         display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important;
         width: 100% !important; margin: 2rem 0 !important; padding: 20px !important;
@@ -149,93 +155,85 @@ else:
     .desc-midia {{ font-style: italic !important; color: {color_text} !important; font-size: 1.1rem !important; text-align: center !important; max-width: 80% !important;}}
     
     .ficha-catalografica-container {{
-        font-family: 'Times New Roman', Times, serif !important;
-        color: {color_text} !important;
-        max-width: 650px;
-        margin: 5rem auto;
-        font-size: 1rem;
+        font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important;
+        max-width: 650px; margin: 4rem auto; font-size: 1rem;
     }}
-    .ficha-box {{
-        border: 1px solid {color_text} !important;
-        padding: 1.5rem;
-        display: flex;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-    }}
-    .ficha-texto {{
-        font-family: 'Times New Roman', Times, serif !important;
-        color: {color_text} !important;
-    }}
+    .ficha-box {{ border: 1px solid {color_text} !important; padding: 1.5rem; display: flex; margin-top: 1.5rem; margin-bottom: 1.5rem; }}
+    .ficha-texto {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; }}
     
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
     
     @media (max-width: 768px) {{
-        .block-container {{ padding: 2rem 1rem !important; }}
+        .block-container {{ padding: 2rem 1rem !important; border: 2px solid {color_border} !important; }}
         .titulo-capa {{ font-size: 2.2rem !important; }}
         .subtitulo-capitulo {{ font-size: 1.8rem !important; }}
         .texto {{ font-size: 1.1rem !important; }}
         .dropcap::first-letter {{ font-size: 4rem !important; }}
         div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} 
         .ficha-box {{ flex-direction: column; }}
-        .ficha-cutter {{ margin-bottom: 1rem; }}
     }}
 </style>
 """, unsafe_allow_html=True)
 
+    # --- PÁGINA 1: CAPA ---
     st.markdown(f'<p style="text-align:center; letter-spacing: 4px; color: {color_accent} !important; font-weight:bold;">UFVJM | PIBID</p>', unsafe_allow_html=True)
     st.markdown('<h1 class="titulo-capa">RELATÓRIO DA AÇÃO EXTENSIONISTA:<br>ENTRE O PLANEJAR, O FAZER E O SONHAR</h1>', unsafe_allow_html=True)
     
     st.markdown('''
 <div class="box-imagem-paisagem">
-    <span class="tag-midia">FOTOGRAFIA / CAPA (16:9 HORIZONTAL)</span>
-    <span class="desc-midia">Insira aqui a fotografia de maior impacto do projeto.</span>
+<span class="tag-midia">FOTOGRAFIA / CAPA (16:9 HORIZONTAL)</span>
+<span class="desc-midia">Insira aqui a fotografia de maior impacto do projeto.</span>
 </div>
 ''', unsafe_allow_html=True)
 
-    st.markdown('''
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 2: FICHA CATALOGRÁFICA (SEM RECUOS PARA EVITAR BLOCO DE CÓDIGO) ---
+    st.markdown("""
 <div class="ficha-catalografica-container">
-    <div style="text-align: center; margin-bottom: 2rem;">
-        <strong class="ficha-texto">Organizadores</strong><br>
-        <span class="ficha-texto">Nome Sobrenome</span><br>
-        <span class="ficha-texto">Nome Sobrenome</span><br>
-        <span class="ficha-texto">Nome Sobrenome</span><br><br>
-        <strong class="ficha-texto">Fotografia</strong><br>
-        <span class="ficha-texto">Nome Sobrenome</span><br>
-        <span class="ficha-texto">Nome Sobrenome</span><br><br>
-        <strong class="ficha-texto">Diagramação</strong><br>
-        <span class="ficha-texto">Nome Sobrenome</span>
-    </div>
-
-    <div style="text-align: center; font-size: 0.95rem;" class="ficha-texto">
-        Elaborado com os dados fornecidos pelo(a) autor(a).
-    </div>
-    
-    <div class="ficha-box">
-        <div class="ficha-cutter" style="width: 50px; font-size: 0.9rem;">P745</div>
-        <div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
-            <span class="ficha-texto">A Poesia do Movimento / organizadores Nome Sobrenome, Nome Sobrenome, Nome Sobrenome; fotografia Nome Sobrenome, Nome Sobrenome; diagramação Nome Sobrenome. - Diamantina: UFVJM, 2024.</span><br><br>
-            <span class="ficha-texto">Inclui bibliografia</span><br><br>
-            <span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
-            <span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Sobrenome, Nome. II. Sobrenome, Nome. III. Sobrenome, Nome. IV. Sobrenome, Nome. V. Sobrenome, Nome. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
-            <div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
-        </div>
-    </div>
-    
-    <div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
-        <span class="ficha-texto">Ficha Catalográfica – Serviço de Bibliotecas/UFVJM</span><br>
-        <span class="ficha-texto">Bibliotecária Nome Sobrenome – CRB-6/1234</span>
-    </div>
+<div style="text-align: center; margin-bottom: 2rem;">
+<strong class="ficha-texto">Organizadores</strong><br>
+<span class="ficha-texto">Nome Sobrenome</span><br>
+<span class="ficha-texto">Nome Sobrenome</span><br>
+<span class="ficha-texto">Nome Sobrenome</span><br><br>
+<strong class="ficha-texto">Fotografia</strong><br>
+<span class="ficha-texto">Nome Sobrenome</span><br>
+<span class="ficha-texto">Nome Sobrenome</span><br><br>
+<strong class="ficha-texto">Diagramação</strong><br>
+<span class="ficha-texto">Nome Sobrenome</span>
 </div>
-''', unsafe_allow_html=True)
+<div style="text-align: center; font-size: 0.95rem;" class="ficha-texto">Elaborado com os dados fornecidos pelo(a) autor(a).</div>
+<div class="ficha-box">
+<div style="width: 50px; font-size: 0.9rem;">P745</div>
+<div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
+<span class="ficha-texto">A Poesia do Movimento / organizadores Nome Sobrenome, Nome Sobrenome, Nome Sobrenome; fotografia Nome Sobrenome, Nome Sobrenome; diagramação Nome Sobrenome. - Diamantina: UFVJM, 2024.</span><br><br>
+<span class="ficha-texto">Inclui bibliografia</span><br><br>
+<span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
+<span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Sobrenome, Nome. II. Sobrenome, Nome. III. Sobrenome, Nome. IV. Sobrenome, Nome. V. Sobrenome, Nome. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
+<div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
+</div>
+</div>
+<div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
+<span class="ficha-texto">Ficha Catalográfica – Serviço de Bibliotecas/UFVJM</span><br>
+<span class="ficha-texto">Bibliotecária Nome Sobrenome – CRB-6/1234</span>
+</div>
+</div>
+""", unsafe_allow_html=True)
 
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 3: INTRODUÇÃO ---
     st.markdown('<h2 class="subtitulo-capitulo">Apresentação</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto dropcap">Neste caderno, datas e ponteiros do relógio importam menos do que as transformações que ocorreram nos espaços da Escola Estadual Professora Ayna Torres. A Ginástica para Todos (GPT) não foi apenas uma sequência de aulas práticas; foi um desafio, foi mudança, foi conflito e foi divertido demais!</p>
 <p class="texto">Deixamos os relatos cronológicos de lado para organizar nossas memórias através dos sentimentos, das barreiras quebradas e das conquistas coletivas.</p>
 ''', unsafe_allow_html=True)
 
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 4: CAPÍTULO 1 ---
     st.markdown('<h2 class="subtitulo-capitulo">O Peso do Tempo e o Despertar do Corpo</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1], gap="large")
@@ -247,12 +245,26 @@ else:
 ''', unsafe_allow_html=True)
     with col2:
         st.markdown('''
-<div class="box-imagem-paisagem">
-    <span class="tag-midia">FOTO (16:9 HORIZONTAL)</span>
-    <span class="desc-midia">O contraste entre o pátio vazio e os primeiros alunos entrando no auditório, descobrindo os colchonetes.</span>
+<div class="box-imagem-retrato">
+<span class="tag-midia">FOTO (9:16 VERTICAL)</span>
+<span class="desc-midia">O contraste entre o pátio vazio e os primeiros alunos entrando no auditório, descobrindo os colchonetes.</span>
 </div>
 ''', unsafe_allow_html=True)
 
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 5: GALERIA VISUAL 1 ---
+    st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: A Descoberta</h3>', unsafe_allow_html=True)
+    st.markdown('''
+<div class="box-imagem-paisagem">
+<span class="tag-midia">VÍDEO OU GIF EM LOOP (16:9 HORIZONTAL)</span>
+<span class="desc-midia">Espaço dedicado a um registro do ambiente se transformando.</span>
+</div>
+''', unsafe_allow_html=True)
+
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 6: CAPÍTULO 2 ---
     st.markdown('<h2 class="subtitulo-capitulo">Vencendo o Medo do Desconhecido e o Preconceito</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Talvez a maior acrobacia realizada neste projeto não tenha sido física. O colchonete revelou que muitos de nós somos prisioneiros dos nossos próprios medos. Os alunos descobriram que o bloqueio mental é o verdadeiro causador de lesões: quando a gente evita o movimento por medo de se machucar, acaba se machucando.</p>
@@ -262,11 +274,14 @@ else:
     
     st.markdown('''
 <div class="box-imagem-paisagem">
-    <span class="tag-midia">VÍDEO/FOTO (16:9 HORIZONTAL OU 9:16 VERTICAL)</span>
-    <span class="desc-midia">Alunos superando o medo inicial; o sorriso de alívio ao executar uma "estrelinha" ou um salto pela primeira vez.</span>
+<span class="tag-midia">VÍDEO/FOTO (16:9 HORIZONTAL)</span>
+<span class="desc-midia">Alunos superando o medo inicial; o sorriso de alívio ao executar uma "estrelinha" ou um salto pela primeira vez.</span>
 </div>
 ''', unsafe_allow_html=True)
 
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 7: CAPÍTULO 3 ---
     st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência e Fraternidade</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
@@ -278,18 +293,42 @@ else:
     with col3:
         st.markdown('''
 <div class="box-imagem-retrato">
-    <span class="tag-midia">FOTO (9:16 VERTICAL)</span>
-    <span class="desc-midia">O toque de cuidado; alunos auxiliando uns aos outros na execução das figuras acrobáticas em grupo, celebrando a fraternidade.</span>
+<span class="tag-midia">FOTO (9:16 VERTICAL)</span>
+<span class="desc-midia">O toque de cuidado; alunos auxiliando uns aos outros.</span>
 </div>
 ''', unsafe_allow_html=True)
     with col4:
         st.markdown('''
 <div class="box-imagem-retrato">
-    <span class="tag-midia">FOTO (9:16 VERTICAL)</span>
-    <span class="desc-midia">A roda de conversa e o preenchimento reflexivo dos questionários (TCLEs), momento de escuta e conexão.</span>
+<span class="tag-midia">FOTO (9:16 VERTICAL)</span>
+<span class="desc-midia">A roda de conversa e conexão.</span>
 </div>
 ''', unsafe_allow_html=True)
 
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 8: GALERIA VISUAL 2 ---
+    st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: O Movimento Coletivo</h3>', unsafe_allow_html=True)
+    
+    g_col1, g_col2 = st.columns(2, gap="large")
+    with g_col1:
+        st.markdown('''
+<div class="box-imagem-retrato">
+<span class="tag-midia">FOTO (9:16 VERTICAL)</span>
+<span class="desc-midia">Coreografia geométrica.</span>
+</div>
+''', unsafe_allow_html=True)
+    with g_col2:
+        st.markdown('''
+<div class="box-imagem-retrato">
+<span class="tag-midia">FOTO (9:16 VERTICAL)</span>
+<span class="desc-midia">O coletivo em ação.</span>
+</div>
+''', unsafe_allow_html=True)
+
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    # --- PÁGINA 9: CAPÍTULO 4 ---
     st.markdown('<h2 class="subtitulo-capitulo">A Semente que rola: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">O fim do projeto é, na verdade, um começo. Transformados pela flexibilidade que ganharam no corpo e na mente, os alunos sonham mais alto.</p>
@@ -299,11 +338,12 @@ else:
 
     st.markdown('''
 <div class="box-imagem-paisagem">
-    <span class="tag-midia">FOTO FINAL (16:9 HORIZONTAL)</span>
-    <span class="desc-midia">A grande foto em grupo do último encontro, com a equipe da universidade (Priscila e Cláudia) e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
+<span class="tag-midia">FOTO FINAL (16:9 HORIZONTAL)</span>
+<span class="desc-midia">A grande foto em grupo do último encontro, com a equipe da universidade (Priscila e Cláudia) e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
 </div>
 ''', unsafe_allow_html=True)
 
-    st.markdown(f'<div style="margin-top: 6rem; text-align: center; border-top:1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
+    # --- BOTÃO LADO B ---
+    st.markdown(f'<div style="margin-top: 6rem; text-align: center; border-top: 1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
     st.button("ACESSAR ANEXO CONFIDENCIAL", on_click=alternar_dimensao)
     st.markdown('</div>', unsafe_allow_html=True)
