@@ -35,7 +35,7 @@ if modo_noturno:
     color_text = "#e0e0e0"
     color_title = "#ffffff"
     color_accent = "#ff6b6b"
-    color_border = "#333333"
+    color_border = "#444444"
     bg_img_box = "#2a2a2a"
     # Dossiê (Lado B) Noturno
     bg_dossie = "#1a1a1a"
@@ -158,7 +158,25 @@ else:
     .tag-midia {{ font-family: sans-serif !important; text-transform: uppercase !important; font-size: 0.9rem !important; font-weight: bold !important; color: #888 !important; margin-bottom: 10px !important; text-align: center !important;}}
     .desc-midia {{ font-style: italic !important; color: {color_text} !important; font-size: 1.1rem !important; text-align: center !important; max-width: 80% !important;}}
     
-    .ficha-catalografica {{ border: 2px solid {color_border} !important; padding: 2.5rem !important; max-width: 700px !important; margin: 4rem auto !important; background-color: {bg_img_box} !important; text-align: left !important; }}
+    /* ESTILO DA FICHA CATALOGRÁFICA */
+    .ficha-catalografica-container {{
+        font-family: 'Times New Roman', Times, serif !important;
+        color: {color_text} !important;
+        max-width: 650px;
+        margin: 5rem auto;
+        font-size: 1rem;
+    }}
+    .ficha-box {{
+        border: 1px solid {color_text} !important;
+        padding: 1.5rem;
+        display: flex;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }}
+    .ficha-texto {{
+        font-family: 'Times New Roman', Times, serif !important;
+        color: {color_text} !important;
+    }}
     
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s;}}
@@ -173,6 +191,8 @@ else:
         .dropcap::first-letter {{ font-size: 4rem !important; }}
         /* Força elementos lado a lado a caírem para a linha de baixo em telas pequenas */
         div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} 
+        .ficha-box {{ flex-direction: column; }}
+        .ficha-cutter {{ margin-bottom: 1rem; }}
     }}
 </style>
 """, unsafe_allow_html=True)
@@ -188,11 +208,40 @@ else:
     </div>
     ''', unsafe_allow_html=True)
 
-    # --- PÁGINA 2: FICHA CATALOGRÁFICA LOREM IPSUM ---
-    st.markdown('''
-    <div class="ficha-catalografica">
-        <p style="font-weight:bold; text-align:center; margin-bottom:1rem;">Ficha Catalográfica</p>
-        <p class="texto" style="font-size:1rem !important;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    # --- PÁGINA 2: FICHA CATALOGRÁFICA (FORMATO IMAGEM) ---
+    st.markdown(f'''
+    <div class="ficha-catalografica-container">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <strong class="ficha-texto">Organizadores</strong><br>
+            <span class="ficha-texto">Carlos Silva</span><br>
+            <span class="ficha-texto">Mariana Costa</span><br>
+            <span class="ficha-texto">Renato Mendes</span><br><br>
+            <strong class="ficha-texto">Fotografia</strong><br>
+            <span class="ficha-texto">Lucas Almeida</span><br>
+            <span class="ficha-texto">Beatriz Souza</span><br><br>
+            <strong class="ficha-texto">Diagramação</strong><br>
+            <span class="ficha-texto">Felipe Rocha</span>
+        </div>
+
+        <div style="text-align: center; font-size: 0.95rem;" class="ficha-texto">
+            Elaborado com os dados fornecidos pelo(a) autor(a).
+        </div>
+        
+        <div class="ficha-box">
+            <div class="ficha-cutter" style="width: 50px; font-size: 0.9rem;">P745</div>
+            <div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
+                <span class="ficha-texto">A Poesia do Movimento / organizadores Carlos Silva, Mariana Costa, Renato Mendes; fotografia Lucas Almeida, Beatriz Souza; diagramação Felipe Rocha. - Diamantina: UFVJM, 2024.</span><br><br>
+                <span class="ficha-texto">Inclui bibliografia</span><br><br>
+                <span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
+                <span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Silva, Carlos. II. Costa, Mariana. III. Mendes, Renato. IV. Almeida, Lucas. V. Rocha, Felipe. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
+                <div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
+            <span class="ficha-texto">Ficha Catalográfica – Serviço de Bibliotecas/UFVJM</span><br>
+            <span class="ficha-texto">Bibliotecária Juliana Ribeiro – CRB-6/1234</span>
+        </div>
     </div>
     ''', unsafe_allow_html=True)
 
@@ -231,7 +280,7 @@ else:
     
     st.markdown('''
     <div class="box-imagem-paisagem">
-        <span class="tag-midia">VÍDEO/FOTO (16:9 HORIZONTAL OU 9:16 VERTICAL)</span>
+        <span class="tag-midia">VÍDEO/FOTO (16:9 HORIZONTAL)</span>
         <span class="desc-midia">Alunos superando o medo inicial; o sorriso de alívio ao executar uma "estrelinha" ou um salto pela primeira vez.</span>
     </div>
     ''', unsafe_allow_html=True)
@@ -271,7 +320,7 @@ else:
     st.markdown('''
     <div class="box-imagem-paisagem">
         <span class="tag-midia">FOTO FINAL (16:9 HORIZONTAL)</span>
-        <span class="desc-midia">A grande foto em grupo do último encontro, com a equipe da universidade (Priscila e Cláudia) e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
+        <span class="desc-midia">A grande foto em grupo do último encontro, com a equipe da universidade e o brilho nos olhos de quem descobriu a força do próprio corpo.</span>
     </div>
     ''', unsafe_allow_html=True)
 
