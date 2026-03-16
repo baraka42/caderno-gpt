@@ -230,7 +230,6 @@ else:
     if os.path.exists("foto_epigrafe.jpg"):
         st.image("foto_epigrafe.jpg", use_container_width=True)
     st.markdown('''
-#<div class="legenda-img" style="margin-bottom: 3rem;">Figura 1: A leveza e o preparo do movimento.</div>
 <div class="epigrafe-container">
 <p class="epigrafe-texto">"Enquanto o tempo acelera e pede pressa<br>Eu me recuso, faço hora, vou na valsa<br>A vida é tão rara"</p>
 <p class="epigrafe-autor">— Paciência, Lenine</p>
