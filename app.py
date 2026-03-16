@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import base64
 import os
 
-# --- FUNÇÃO PARA BLINDAR O ÁUDIO CONTRA O BLOQUEIO DO STREAMLIT ---
+# --- FUNÇÕES PARA BLINDAR ELEMENTOS INTERATIVOS CONTRA O BLOQUEIO DO STREAMLIT ---
 def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover, fonte, texto):
     if os.path.exists(caminho):
         with open(caminho, "rb") as f:
@@ -33,7 +33,7 @@ def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover
             <audio id="player" loop>
               <source src="data:audio/mp3;base64,{b64}" type="audio/mpeg">
             </audio>
-            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='PAUSAR TRILHA';}} else {{a.pause(); this.innerText='{texto.upper()}';}}">▶ {texto.upper()}</button>
+            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='PAUSAR TRILHA';}} else {{a.pause(); this.innerText='▶ {texto.upper()}';}}">▶ {texto.upper()}</button>
         </body>
         </html>
         """
@@ -185,22 +185,22 @@ if st.session_state.mundo_invertido:
     st.markdown('<h2 style="border-bottom: 2px solid #b32424; padding-bottom:10px; margin-bottom: 2rem;">Capítulo 1: O Portão</h2>', unsafe_allow_html=True)
     
     st.markdown('''
-<p class="dossie-texto">A maioria das pessoas vive sem saber de um secret essencial: o peso das coisas não é o mesmo em todos os lugares.</p>
+<p class="dossie-texto">A maioria das pessoas vive sem saber de um segredo essencial: o peso das coisas não é o mesmo em todos os lugares.</p>
 <p class="dossie-texto">Quem trabalha em Escola sabe disso. E eu, Professor de Educação Física, deveria até saber mais que todo mundo. Eu estava prestes a testemunhar, mais uma vez, as consequências desse fenômeno.</p>
-<p class="dossie-texto">But before I tell you what happened, I need to explain one thing.</p>
-<p class="dossie-texto">The "Ranca" is not a simple game. It's not a disorganized pickup match. Ranca is a force of nature. <span class="marca-texto">Ranca has no MOTHER!</span> It's a spontaneous event with magnetic powers, capable of attracting unwary bodies and enveloping them in a ritual of sweat, screams, and lacerated toes. <span class="censura">“Pass this ball, C@#$%%0!!!”</span></p>
-<p class="dossie-texto">Knowing this or not, there I went.</p>
-<p class="dossie-texto">It was the first day of attempting to present the Gymnastics For All project to the full-day students. I went from room to room during lunchtime, when students hadn't finished eating yet, besides the ones I encountered in the hallways. The plan was simple: invite everyone to go to the auditorium, do a demonstration, explain what Gymnastics For All is, and try to win that crowd over to the new practice. Because nothing conquers a full-day high school teenager more than interrupting the only break they have in the day to talk about physical activity.</p>
-<p class="dossie-texto">I went. Rooms visited, students approached, invitations made. Everything within the plan. Dialogical.</p>
-<p class="dossie-texto" style="text-align: center; font-size: 1.5rem; margin: 3rem 0; font-weight:bold;">At eleven-thirty in the morning on March tenth, I witnessed the inevitable.</p>
-<p class="dossie-texto" style="text-align: center; font-size: 2rem; color: #b32424 !important; font-weight:bold; transform: rotate(1deg);">Someone opened the court gate.</p>
-<p class="dossie-texto">It wasn't a grand event. There was no announcement, no fuss. It was just a gate opening. But for anyone familiar with school, you know that's equivalent to the recess bell on a day when the snack is hot dogs. More than quickly, most students retreated. It wasn't disinterest, it wasn't malice. It was purely and simply the force of local gravity acting. They ran to the court seeking another dose to satisfy the itch in their legs. The Ranca.</p>
-<p class="dossie-texto">In the auditorium, I waited. And waited. And kept waiting.</p>
-<p class="dossie-texto">In the end, a few students remained. They weren't necessarily the ones most interested in gymnastics. They were, very likely, the ones who felt too embarrassed to leave me talking to myself. They stayed until the end, listened to the entire explanation, I had never witnessed such politeness, some even nodded their heads at strategic moments.</p>
-<p class="dossie-texto">Outside, on the hot concrete of the court, the Ranca roared.</p>
-<p class="dossie-texto">And I understood, that day, that the universe has its own laws. You can plan, invite, explain, demonstrate. You can go from room to room during lunchtime, approach student by student in the hallways. You can be the most optimistic and dreamy fellow on the face of the Earth.</p>
-<p class="dossie-texto">But if someone opens the court gate, it's no use.</p>
-<p class="dossie-texto" style="font-size:2.5rem; text-align: center; margin-top: 3rem; color: #b32424 !important; font-weight:bold;">The Ranca is inevitable!</p>
+<p class="dossie-texto">Mas antes de contar o que aconteceu, preciso explicar uma coisa.</p>
+<p class="dossie-texto">O "Ranca" não é uma simples brincadeira. Não é uma pelada desorganizada. O Ranca é uma força da natureza. <span class="marca-texto">O Ranca não tem MÃE!</span> É Um evento espontâneo com poderes magnéticos, capaz de atrair corpos desavisados e os envolver num ritual de suor, gritos e dedões do pé dilacerados. <span class="censura">“Toca essa bola, C@#$%%0!!!”</span></p>
+<p class="dossie-texto">Sabendo disso ou não, lá fui eu.</p>
+<p class="dossie-texto">Era o primeiro dia de tentativa de apresentar o projeto de Ginástica Para Todos para os alunos do Integral. Fui de sala em sala no horário do almoço, quando os alunos ainda não tinham terminado de comer, além dos que encontrava pelos corredores. O plano era simples: convidar todo mundo para ir até o auditório, fazer uma demonstração, explicar o que é a Ginástica Para Todos e tentar conquistar aquele povo para a nova prática. Porque nada conquista mais um adolescente do ensino integRal do que interromper a única pausa que ele tem no dia para falar sobre atividade física.</p>
+<p class="dossie-texto">Fui. Salas visitadas, alunos abordados, convites feitos. Tudo dentro do planejado. Dialógico.</p>
+<p class="dossie-texto" style="text-align: center; font-size: 1.5rem; margin: 3rem 0; font-weight:bold;">Às onze e meia da manhã do dia dez de março, testemunhei o inevitável.</p>
+<p class="dossie-texto" style="text-align: center; font-size: 2rem; color: #b32424 !important; font-weight:bold; transform: rotate(1deg);">Alguém abriu o portão da quadra.</p>
+<p class="dossie-texto">Não foi um evento grandioso. Não teve anúncio, não teve alarde. Foi só um portão se abrindo. Mas, para quem tem intimidade com escola, sabe que aquilo é equivalente ao sinal do recreio em dia que a merenda é cachorro-quente. Mais que depressa, a maioria dos alunos bateu em retirada. Não foi desinteresse, não foi maldade. Foi pura e simplesmente a força da gravidade local agindo. Eles correram para a quadra em busca de outra dose para saciar a coceira das pernas. O Ranca.</p>
+<p class="dossie-texto">Lá no auditório, esperei. E esperei. E continuei esperando.</p>
+<p class="dossie-texto">No final, alguns poucos alunos restaram. Não eram necessariamente os mais interessados em ginástica. Eram, muito provavelmente, os que sentiram vergonha de me deixar falando sozinho. Eles ficaram até o fim, ouviram a explicação inteira, nunca tinha testemunhado tamanha delicadeza, alguns até acenaram com a cabeça em momentos estratégicos.</p>
+<p class="dossie-texto">Lá fora, no chão quente da quadra, o Ranca rugia.</p>
+<p class="dossie-texto">E eu entendi, naquele dia, que o universo tem suas próprias leis. Você pode planejar, convidar, explicar, demonstrar. Pode ir de sala em sala no horário do almoço, abordar aluno por aluno nos corredores. Pode ser o sujeito mais otimista e sonhador da face da Terra.</p>
+<p class="dossie-texto">Mas se alguém abrir o portão da quadra, não adianta.</p>
+<p class="dossie-texto" style="font-size:2.5rem; text-align: center; margin-top: 3rem; color: #b32424 !important; font-weight:bold;">O Ranca é inevitável!</p>
 ''', unsafe_allow_html=True)
 
     st.button("FECHAR DOSSIÊ E VOLTAR AO RELATÓRIO", on_click=alternar_dimensao)
@@ -353,7 +353,7 @@ else:
     st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
-<p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execução precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
+<p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execution precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
 <p class="texto">As coreografias geométricas não foram apenas demonstrações físicas, mas a prova de que cada corpo, com seu próprio ritmo, é essencial para manter a figura acrobática em pé. A ginástica uniu diferenças em um só movimento, respeitando o espaço e o limite de cada um.</p>
 ''', unsafe_allow_html=True)
 
@@ -394,6 +394,6 @@ else:
         st.image("foto_final.jpg", use_container_width=True)
     st.markdown('<div class="legenda-img">Figura 8: Encerramento do projeto. Ginástica para Todos!</div>', unsafe_allow_html=True)
 
-    st.markdown(f'<div style="margin-top: 6rem; text-align: center; border-top: 1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
+    st.markdown(f'<div style="margin-top: 2rem; text-align: center; border-top: 1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
     st.button("ACESSAR ANEXO CONFIDENCIAL", on_click=alternar_dimensao)
     st.markdown('</div>', unsafe_allow_html=True)
