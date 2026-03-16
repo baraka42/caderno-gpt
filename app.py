@@ -204,14 +204,22 @@ if st.session_state.mundo_invertido:
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     
-    /* REGRAS DE IMPRESSÃO ESTABILIZADAS - LADO B */
+    /* REGRAS DE IMPRESSÃO ESTABILIZADAS E ANTI-SOBREPOSIÇÃO - LADO B */
     @media print {{
-        div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"], div[data-testid="stCheckbox"] {{ display: none !important; }}
+        div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"], div[data-testid="stCheckbox"], button {{ display: none !important; }}
+        
         html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"] {{ 
-            overflow: visible !important; height: auto !important; position: static !important; 
+            overflow: visible !important; height: auto !important; position: relative !important; display: block !important;
         }}
+        
+        [data-testid="stVerticalBlock"], [data-testid="stHorizontalBlock"], [data-testid="column"] {{
+            display: block !important; width: 100% !important; flex: none !important; position: relative !important; height: auto !important;
+        }}
+        
         .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }}
         * {{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
+        
+        .dossie-texto, h2 {{ page-break-inside: avoid !important; break-inside: avoid !important; }}
     }}
     
     @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1.5rem !important; border: 2px solid {color_border} !important;}} .carimbo {{ font-size: 2rem !important; }} .dossie-texto {{ font-size: 1.1rem !important; }} }}
@@ -266,8 +274,10 @@ else:
     .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}}
     .dropcap::first-letter {{ float: left !important; font-size: 5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: {color_accent} !important; font-weight: 700 !important; }}
     .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; text-indent: 0 !important; }}
+    
     .box-imagem-paisagem {{ aspect-ratio: 16 / 9; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
     .box-imagem-retrato {{ aspect-ratio: 9 / 16; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
+    
     .legenda-img {{ font-size: 0.95rem !important; color: #777 !important; text-align: center !important; font-style: italic !important; margin-bottom: 2rem !important; font-family: 'Lora', serif !important; }}
     .ficha-catalografica-container {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; max-width: 650px; margin: 4rem auto; font-size: 1rem; text-indent: 0 !important;}}
     .ficha-box {{ border: 1px solid {color_text} !important; padding: 1.5rem; display: flex; margin-top: 1.5rem; margin-bottom: 1.5rem; }}
@@ -279,14 +289,28 @@ else:
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
 
-    /* REGRAS DE IMPRESSÃO ESTABILIZADAS - LADO A */
+    /* REGRAS DE IMPRESSÃO ESTABILIZADAS E ANTI-SOBREPOSIÇÃO - LADO A */
     @media print {{
-        div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"], div[data-testid="stCheckbox"] {{ display: none !important; }}
+        div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"], div[data-testid="stCheckbox"], button {{ display: none !important; }}
+        
+        /* Converte os contêineres do Streamlit em fluxo de bloco clássico */
         html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"] {{ 
-            overflow: visible !important; height: auto !important; position: static !important; 
+            overflow: visible !important; height: auto !important; position: relative !important; display: block !important;
         }}
-        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }}
+        
+        /* Desativa as colunas Flexbox que causam as imagens subirem no texto */
+        [data-testid="stVerticalBlock"], [data-testid="stHorizontalBlock"], [data-testid="column"] {{
+            display: block !important; width: 100% !important; flex: none !important; position: relative !important; height: auto !important;
+        }}
+        
+        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; background: transparent !important;}}
         * {{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
+        
+        /* Protege imagens e caixas de quebrarem no meio da folha */
+        img, video, .ficha-catalografica-container, .epigrafe-container, .box-imagem-paisagem, .box-imagem-retrato {{
+            page-break-inside: avoid !important; break-inside: avoid !important;
+        }}
+        h1, h2, h3, h4 {{ page-break-after: avoid !important; break-after: avoid !important; }}
     }}
 
     @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 0 !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
