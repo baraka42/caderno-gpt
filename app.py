@@ -46,17 +46,20 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# --- INICIALIZAÇÃO DE VARIÁVEIS DE ESTADO ---
+if 'autenticado' not in st.session_state:
+    st.session_state.autenticado = False
+if 'mundo_invertido' not in st.session_state:
+    st.session_state.mundo_invertido = False
+if 'reset_scroll' not in st.session_state:
+    st.session_state.reset_scroll = False
+
 # --- CONTROLE DE MODO NOTURNO ---
 col_vazia, col_toggle = st.columns([8, 2])
 with col_toggle:
     modo_noturno = st.toggle("Modo Noturno")
 
 # --- CONTROLE DE NAVEGAÇÃO E SCROLL ---
-if 'mundo_invertido' not in st.session_state:
-    st.session_state.mundo_invertido = False
-if 'reset_scroll' not in st.session_state:
-    st.session_state.reset_scroll = False
-
 def alternar_dimensao():
     st.session_state.mundo_invertido = not st.session_state.mundo_invertido
     st.session_state.reset_scroll = True
@@ -99,6 +102,36 @@ else:
     bg_img_box = "#f5f3ec"
     bg_dossie = "#e8e3d3"
     color_dossie_text = "#2b2b2b"
+
+# ==============================================================================
+# 🔒 TELA DE LOGIN (BARREIRA DE ACESSO)
+# ==============================================================================
+if not st.session_state.autenticado:
+    st.markdown(f"""
+    <style>
+        .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
+        h1, p {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; text-align: center; }}
+        .login-box {{ max-width: 400px; margin: 4rem auto; padding: 3rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-radius: 8px; transition: background-color 0.3s, border 0.3s; }}
+        .stButton > button {{ background-color: transparent !important; border: 1px solid {color_accent} !important; color: {color_accent} !important; width: 100% !important; padding: 10px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 1rem; font-family: 'Lora', serif !important;}}
+        .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    st.markdown("<h1>Acesso Restrito</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='margin-bottom: 2rem; font-family: Lora, serif !important; color: " + color_text + " !important;'>Insira a credencial para acessar o Caderno Didático.</p>", unsafe_allow_html=True)
+    
+    senha_digitada = st.text_input("Senha", type="password", label_visibility="collapsed", placeholder="Digite a senha...")
+    
+    if st.button("Entrar"):
+        if senha_digitada == "bomdia":
+            st.session_state.autenticado = True
+            st.rerun()
+        else:
+            st.error("Senha incorreta. Acesso negado.")
+            
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.stop() # Bloqueia a execução do código abaixo se não estiver autenticado
 
 # ==============================================================================
 # LADO B: O GUIA DO PROFESSOR (Dossiê Confidencial)
