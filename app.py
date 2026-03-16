@@ -3,21 +3,41 @@ import streamlit.components.v1 as components
 import base64
 import os
 
-# --- FUNÇÃO PARA RENDERIZAR ÁUDIO ---
-def renderizar_audio(caminho_arquivo, classe_css, texto_botao):
-    if os.path.exists(caminho_arquivo):
-        with open(caminho_arquivo, "rb") as f:
-            dados = f.read()
-        b64 = base64.b64encode(dados).decode()
-        html = f'''
-        <audio id="{caminho_arquivo}" loop>
-          <source src="data:audio/mp3;base64,{b64}" type="audio/mpeg">
-        </audio>
-        <button class="{classe_css}" onclick="var a=document.getElementById('{caminho_arquivo}'); if(a.paused){{a.play(); this.innerText='Pausar Trilha';}} else {{a.pause(); this.innerText='{texto_botao}';}}">{texto_botao}</button>
-        '''
-        st.markdown(html, unsafe_allow_html=True)
-    else:
-        st.error(f"Arquivo não encontrado: {caminho_arquivo}")
+# --- FUNÇÃO PARA BLINDAR O ÁUDIO CONTRA O BLOQUEIO DO STREAMLIT ---
+def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover, fonte, texto):
+    if os.path.exists(caminho):
+        with open(caminho, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+        
+        html_code = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Lora:ital,wght@0,400;0,600&display=swap');
+                body {{
+                    margin: 0; display: flex; justify-content: center; align-items: center; background-color: transparent;
+                }}
+                .btn-audio {{
+                    background: transparent; border: 1px solid {cor_borda}; color: {cor_borda};
+                    padding: 8px 20px; border-radius: 20px; cursor: pointer;
+                    font-family: {fonte}; font-size: 1rem; transition: background-color 0.3s, color 0.3s;
+                    text-transform: uppercase; letter-spacing: 1px; outline: none;
+                }}
+                .btn-audio:hover {{
+                    background-color: {cor_fundo_hover}; color: {cor_texto_hover};
+                }}
+            </style>
+        </head>
+        <body>
+            <audio id="player" loop>
+              <source src="data:audio/mp3;base64,{b64}" type="audio/mpeg">
+            </audio>
+            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='⏸ PAUSAR TRILHA';}} else {{a.pause(); this.innerText='▶ {texto.upper()}';}}">▶ {texto.upper()}</button>
+        </body>
+        </html>
+        """
+        components.html(html_code, height=60)
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
@@ -48,14 +68,14 @@ if st.session_state.reset_scroll:
 # --- VARIÁVEIS DE TEMA ---
 if modo_noturno:
     bg_app = "#121212"
-    bg_paper = "#1e1e1e"
-    color_text = "#e0e0e0"
+    bg_paper = "#1a1a1a"
+    color_text = "#d4d4d4"
     color_title = "#ffffff"
-    color_accent = "#ff6b6b"
+    color_accent = "#d47272"
     color_border = "#333333"
     bg_img_box = "#222222"
-    bg_dossie = "#1a1a1a"
-    color_dossie_text = "#cccccc"
+    bg_dossie = "#141414"
+    color_dossie_text = "#b0b0b0"
 else:
     bg_app = "#f4f1ea"          
     bg_paper = "#fcfbf8"        
@@ -74,30 +94,24 @@ if st.session_state.mundo_invertido:
     st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
-    .stApp {{ background-color: {bg_app} !important; }}
-    .block-container {{
-        max-width: 900px !important; padding: 4rem 5rem !important;
-        background-color: {bg_dossie} !important;
-        border: 3px solid {color_border} !important; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
-    }}
+    .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
+    .block-container {{ max-width: 900px !important; padding: 4rem 5rem !important; background-color: {bg_dossie} !important; border: 3px solid {color_border} !important; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important; }}
     h1, h2, h3, p, span, div, li {{ color: {color_dossie_text} !important; font-family: 'Special Elite', monospace !important; background: transparent !important; }}
     .dossie-texto {{ font-size: 1.25rem !important; line-height: 1.8 !important; text-align: justify !important; margin-bottom: 1.5rem !important; }}
     .carimbo {{ color: #b32424 !important; border: 4px solid #b32424 !important; padding: 10px 20px !important; font-size: 3rem !important; text-transform: uppercase !important; transform: rotate(-3deg); display: inline-block !important; margin-bottom: 2rem !important; opacity: 0.8 !important;}}
     .marca-texto {{ background-color: #e6d97e !important; color: #111 !important; padding: 0 5px !important; }}
     .censura {{ background-color: #1a1a1a !important; color: #1a1a1a !important; padding: 0 5px !important; border-radius: 2px; transition: 0.3s; }}
     .censura:hover {{ color: #fff !important; cursor: help; }}
-    .btn-audio-b {{ background: transparent; border: 1px solid #b32424; color: #b32424; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: 'Special Elite', monospace; font-size: 1rem; transition: 0.3s; display: block; margin: 0 auto 3rem auto; }}
-    .btn-audio-b:hover {{ background: #b32424; color: {bg_dossie}; }}
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
-    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1.5rem !important; }} .carimbo {{ font-size: 2rem !important; }} .dossie-texto {{ font-size: 1.1rem !important; }} }}
+    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1.5rem !important; border: 2px solid {color_border} !important;}} .carimbo {{ font-size: 2rem !important; }} .dossie-texto {{ font-size: 1.1rem !important; }} }}
 </style>
 """, unsafe_allow_html=True)
 
     st.markdown('<div style="text-align:center;"><div class="carimbo">Arquivo Confidencial</div></div>', unsafe_allow_html=True)
     
-    renderizar_audio("audio_lado_b.mp3", "btn-audio-b", "Ouvir Trilha")
+    renderizar_audio_seguro("audio_lado_b.mp3", "#b32424", "#b32424", bg_dossie, "'Special Elite', monospace", "Ouvir Trilha")
 
     st.markdown('<h2 style="border-bottom: 2px solid #b32424; padding-bottom:10px; margin-bottom: 2rem;">Capítulo 1: O Portão</h2>', unsafe_allow_html=True)
     
@@ -130,7 +144,7 @@ else:
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap');
     .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
-    .block-container {{ max-width: 1150px !important; padding: 6rem 5rem !important; background-color: {bg_paper} !important; box-shadow: 0 25px 70px rgba(0,0,0,0.08) !important; border: 1px solid {color_border} !important; transition: background-color 0.3s; }}
+    .block-container {{ max-width: 1150px !important; padding: 6rem 5rem !important; background-color: {bg_paper} !important; box-shadow: 0 25px 70px rgba(0,0,0,0.08) !important; border: 3px solid {color_border} !important; transition: background-color 0.3s; }}
     h1, h2, h3, h4 {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; background: transparent !important; }}
     p, span, div, li {{ color: {color_text} !important; font-family: 'Lora', serif !important; background: transparent !important; }}
     .quebra-pagina {{ margin: 6rem 0; border: none; border-top: 1px solid {color_border}; opacity: 0.7; }}
@@ -138,11 +152,10 @@ else:
     .titulo-capa {{ font-size: 3.5rem !important; font-weight: 700 !important; text-align: center !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }}
     .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}}
     .dropcap::first-letter {{ float: left !important; font-size: 5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: {color_accent} !important; font-weight: 700 !important; }}
-    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; }}
-    .box-imagem-paisagem {{ aspect-ratio: 16 / 9; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 20px !important; }}
-    .box-imagem-retrato {{ aspect-ratio: 9 / 16; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 20px !important; }}
-    .tag-midia {{ font-family: sans-serif !important; text-transform: uppercase !important; font-size: 0.9rem !important; font-weight: bold !important; color: #999 !important; margin-bottom: 10px !important; text-align: center !important;}}
-    .desc-midia {{ font-style: italic !important; color: {color_text} !important; font-size: 1.1rem !important; text-align: center !important; max-width: 80% !important;}}
+    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; text-indent: 2.5rem !important; }}
+    .dropcap {{ text-indent: 0 !important; }}
+    .box-imagem-paisagem {{ aspect-ratio: 16 / 9; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
+    .box-imagem-retrato {{ aspect-ratio: 9 / 16; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
     .legenda-img {{ font-size: 0.95rem !important; color: #777 !important; text-align: center !important; font-style: italic !important; margin-bottom: 2rem !important; font-family: 'Lora', serif !important; }}
     .ficha-catalografica-container {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; max-width: 650px; margin: 4rem auto; font-size: 1rem; }}
     .ficha-box {{ border: 1px solid {color_text} !important; padding: 1.5rem; display: flex; margin-top: 1.5rem; margin-bottom: 1.5rem; }}
@@ -150,16 +163,14 @@ else:
     .epigrafe-container {{ text-align: center; margin-bottom: 2rem; }}
     .epigrafe-texto {{ font-family: 'Playfair Display', serif !important; font-size: 1.1rem !important; font-style: italic !important; color: {color_accent} !important; line-height: 1.4 !important; margin-bottom: 0.5rem !important;}}
     .epigrafe-autor {{ font-family: 'Lora', serif !important; font-size: 0.85rem !important; color: #777 !important; text-transform: uppercase; letter-spacing: 1px;}}
-    .btn-audio-a {{ background: transparent; border: 1px solid {color_accent}; color: {color_accent}; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: 'Lora', serif; font-size: 1rem; transition: 0.3s; display: block; margin: 0 auto 3rem auto; }}
-    .btn-audio-a:hover {{ background: {color_accent}; color: {bg_paper}; }}
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
-    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
+    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 1.5rem !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
 </style>
 """, unsafe_allow_html=True)
 
-    renderizar_audio("audio_lado_a.mp3", "btn-audio-a", "Ouvir Trilha")
+    renderizar_audio_seguro("audio_lado_a.mp3", color_accent, color_accent, bg_paper, "'Lora', serif", "Ouvir Trilha")
 
     st.markdown('<h1 class="titulo-capa" style="margin-top: 2rem;">RELATÓRIO DA AÇÃO EXTENSIONISTA:<br>ENTRE O PLANEJAR, O FAZER E O SONHAR</h1>', unsafe_allow_html=True)
     
@@ -187,7 +198,7 @@ else:
 <div class="ficha-box">
 <div style="width: 50px; font-size: 0.9rem;">P745</div>
 <div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
-<span class="ficha-texto">Poética Corporal / organizadores Guilherme Pereira Drumond, Priscila Lopes, Claudia Mara Niquini; fotografia Michel Harison, Priscila Lopes; diagramação Whentony Soares Ferreira. - Diamantina: UFVJM, 2019.</span><br><br>
+<span class="ficha-texto">Poética Corporal / organizadores Guilherme Pereira Drumond, Priscila Lopes, Claudia Mara Niquini; fotografia Michael Harison, Priscila Lopes; diagramação Whentony Soares Ferreira. - Diamantina: UFVJM, 2019.</span><br><br>
 <span class="ficha-texto">Inclui bibliografia</span><br><br>
 <span class="ficha-texto">ISBN: 978-85-7045-050-0</span><br><br>
 <span class="ficha-texto">1. Ginástica para todos. 2. Composição coreográfica. 3. Cultura popular. I. Drumond, Guilherme Pereira. II. Lopes, Priscila. III. Niquini, Claudia Mara. IV. Harison, Michael. V. Ferreira, Whentony Soares. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
@@ -243,8 +254,18 @@ else:
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
     st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: A Descoberta</h3>', unsafe_allow_html=True)
+    
     if os.path.exists("video_descoberta.mp4"):
-        st.video("video_descoberta.mp4", autoplay=True, loop=True, muted=True)
+        with open("video_descoberta.mp4", "rb") as f:
+            b64_video = base64.b64encode(f.read()).decode()
+        st.markdown(f'''
+        <div class="box-imagem-paisagem">
+            <video autoplay loop muted playsinline style="width: 100%; border-radius: 4px; pointer-events: none;">
+                <source src="data:video/mp4;base64,{b64_video}" type="video/mp4">
+            </video>
+        </div>
+        ''', unsafe_allow_html=True)
+        
     st.markdown('<div class="legenda-img">Registro 1: O auditório ganhando vida em movimento.</div>', unsafe_allow_html=True)
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
