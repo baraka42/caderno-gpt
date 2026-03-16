@@ -1,5 +1,23 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import base64
+import os
+
+# --- FUNÇÃO PARA RENDERIZAR ÁUDIO ---
+def renderizar_audio(caminho_arquivo, classe_css, texto_botao):
+    if os.path.exists(caminho_arquivo):
+        with open(caminho_arquivo, "rb") as f:
+            dados = f.read()
+        b64 = base64.b64encode(dados).decode()
+        html = f'''
+        <audio id="{caminho_arquivo}" loop>
+          <source src="data:audio/mp3;base64,{b64}" type="audio/mpeg">
+        </audio>
+        <button class="{classe_css}" onclick="var a=document.getElementById('{caminho_arquivo}'); if(a.paused){{a.play(); this.innerText='Pausar Trilha';}} else {{a.pause(); this.innerText='{texto_botao}';}}">{texto_botao}</button>
+        '''
+        st.markdown(html, unsafe_allow_html=True)
+    else:
+        st.error(f"Arquivo não encontrado: {caminho_arquivo}")
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
@@ -30,14 +48,14 @@ if st.session_state.reset_scroll:
 # --- VARIÁVEIS DE TEMA ---
 if modo_noturno:
     bg_app = "#121212"
-    bg_paper = "#1a1a1a"
-    color_text = "#d4d4d4"
+    bg_paper = "#1e1e1e"
+    color_text = "#e0e0e0"
     color_title = "#ffffff"
-    color_accent = "#d47272"
+    color_accent = "#ff6b6b"
     color_border = "#333333"
     bg_img_box = "#222222"
-    bg_dossie = "#141414"
-    color_dossie_text = "#b0b0b0"
+    bg_dossie = "#1a1a1a"
+    color_dossie_text = "#cccccc"
 else:
     bg_app = "#f4f1ea"          
     bg_paper = "#fcfbf8"        
@@ -79,12 +97,7 @@ if st.session_state.mundo_invertido:
 
     st.markdown('<div style="text-align:center;"><div class="carimbo">Arquivo Confidencial</div></div>', unsafe_allow_html=True)
     
-    st.markdown("""
-<audio id="trilhaB" loop>
-  <source src="audio_lado_b.mp3" type="audio/mpeg">
-</audio>
-<button class="btn-audio-b" onclick="var a=document.getElementById('trilhaB'); if(a.paused){a.play(); this.innerText='⏸ PAUSAR GRAVAÇÃO';} else {a.pause(); this.innerText='▶ OUVIR GRAVAÇÃO';}">▶ OUVIR GRAVAÇÃO</button>
-""", unsafe_allow_html=True)
+    renderizar_audio("audio_lado_b.mp3", "btn-audio-b", "Ouvir Trilha")
 
     st.markdown('<h2 style="border-bottom: 2px solid #b32424; padding-bottom:10px; margin-bottom: 2rem;">Capítulo 1: O Portão</h2>', unsafe_allow_html=True)
     
@@ -126,6 +139,10 @@ else:
     .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}}
     .dropcap::first-letter {{ float: left !important; font-size: 5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: {color_accent} !important; font-weight: 700 !important; }}
     .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; }}
+    .box-imagem-paisagem {{ aspect-ratio: 16 / 9; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 20px !important; }}
+    .box-imagem-retrato {{ aspect-ratio: 9 / 16; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 20px !important; }}
+    .tag-midia {{ font-family: sans-serif !important; text-transform: uppercase !important; font-size: 0.9rem !important; font-weight: bold !important; color: #999 !important; margin-bottom: 10px !important; text-align: center !important;}}
+    .desc-midia {{ font-style: italic !important; color: {color_text} !important; font-size: 1.1rem !important; text-align: center !important; max-width: 80% !important;}}
     .legenda-img {{ font-size: 0.95rem !important; color: #777 !important; text-align: center !important; font-style: italic !important; margin-bottom: 2rem !important; font-family: 'Lora', serif !important; }}
     .ficha-catalografica-container {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; max-width: 650px; margin: 4rem auto; font-size: 1rem; }}
     .ficha-box {{ border: 1px solid {color_text} !important; padding: 1.5rem; display: flex; margin-top: 1.5rem; margin-bottom: 1.5rem; }}
@@ -142,17 +159,13 @@ else:
 </style>
 """, unsafe_allow_html=True)
 
-    st.markdown("""
-<audio id="trilhaA" loop>
-  <source src="audio_lado_a.mp3" type="audio/mpeg">
-</audio>
-<button class="btn-audio-a" onclick="var a=document.getElementById('trilhaA'); if(a.paused){a.play(); this.innerText='⏸ Pausar Trilha';} else {a.pause(); this.innerText='▶ Ouvir Trilha';}">▶ Ouvir Trilha</button>
-""", unsafe_allow_html=True)
+    renderizar_audio("audio_lado_a.mp3", "btn-audio-a", "Ouvir Trilha")
 
     st.markdown('<h1 class="titulo-capa" style="margin-top: 2rem;">RELATÓRIO DA AÇÃO EXTENSIONISTA:<br>ENTRE O PLANEJAR, O FAZER E O SONHAR</h1>', unsafe_allow_html=True)
     
-    st.image("foto_capa.jpg", use_container_width=True)
-    st.markdown('<div class="legenda-img">Fotografia de Capa: Título ou descrição da imagem.</div>', unsafe_allow_html=True)
+    if os.path.exists("foto_capa.jpg"):
+        st.image("foto_capa.jpg", use_container_width=True)
+    st.markdown('<div class="legenda-img">Fotografia de Capa: Registro oficial da ação extensionista.</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="ornamento">❧</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
@@ -174,11 +187,11 @@ else:
 <div class="ficha-box">
 <div style="width: 50px; font-size: 0.9rem;">P745</div>
 <div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
-<span class="ficha-texto">A Poesia do Movimento / organizadores Guilherme Pereira Drumond, Priscila Lopes, Claudia Mara Niquini; fotografia Michael Harison, Priscila Lopes; diagramação Whentony Soares Ferreira. - Diamantina: UFVJM, 2024.</span><br><br>
+<span class="ficha-texto">Poética Corporal / organizadores Guilherme Pereira Drumond, Priscila Lopes, Claudia Mara Niquini; fotografia Michel Harison, Priscila Lopes; diagramação Whentony Soares Ferreira. - Diamantina: UFVJM, 2019.</span><br><br>
 <span class="ficha-texto">Inclui bibliografia</span><br><br>
-<span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
-<span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Drumond, Guilherme Pereira. II. Lopes, Priscila. III. Niquini, Claudia Mara. IV. Harison, Michael. V. Ferreira, Whentony Soares. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
-<div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
+<span class="ficha-texto">ISBN: 978-85-7045-050-0</span><br><br>
+<span class="ficha-texto">1. Ginástica para todos. 2. Composição coreográfica. 3. Cultura popular. I. Drumond, Guilherme Pereira. II. Lopes, Priscila. III. Niquini, Claudia Mara. IV. Harison, Michael. V. Ferreira, Whentony Soares. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
+<div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 306</div>
 </div>
 </div>
 <div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
@@ -191,9 +204,10 @@ else:
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
     st.markdown('<div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">', unsafe_allow_html=True)
-    st.image("foto_epigrafe.jpg", use_container_width=True)
+    if os.path.exists("foto_epigrafe.jpg"):
+        st.image("foto_epigrafe.jpg", use_container_width=True)
     st.markdown('''
-<div class="legenda-img" style="margin-bottom: 3rem;">Figura 1: Breve descrição da cena capturada.</div>
+<div class="legenda-img" style="margin-bottom: 3rem;">Figura 1: A leveza e o preparo do movimento.</div>
 <div class="epigrafe-container">
 <p class="epigrafe-texto">"Enquanto o tempo acelera e pede pressa<br>Eu me recuso, faço hora, vou na valsa<br>A vida é tão rara"</p>
 <p class="epigrafe-autor">— Paciência, Lenine</p>
@@ -222,14 +236,16 @@ else:
 <p class="texto">O convite para o movimento encontrou, de início, a resistência natural de quem teme o novo. No primeiro dia de projeto, quando o portão se abriu, muitos alunos bateram em retirada para a quadra, buscando o conforto das práticas habituais. Mas com insistência, apoio dos bolsistas do PIBID e alguns vídeos legais, a semente da curiosidade foi plantada. Aos poucos, a rotina foi quebrada, e o auditório virou um refúgio de leveza onde o tempo, antes arrastado, passou a voar.</p>
 ''', unsafe_allow_html=True)
     with col2:
-        st.image("foto_contraste.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 2: Alunos entrando no auditório.</div>', unsafe_allow_html=True)
+        if os.path.exists("foto_contraste.jpg"):
+            st.image("foto_contraste.jpg", use_container_width=True)
+        st.markdown('<div class="legenda-img">Figura 2: Alunos entrando no auditório e descobrindo os colchonetes.</div>', unsafe_allow_html=True)
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
     st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: A Descoberta</h3>', unsafe_allow_html=True)
-    st.video("video_descoberta.mp4")
-    st.markdown('<div class="legenda-img">Registro 1: Auditório ganhando vida com as primeiras movimentações.</div>', unsafe_allow_html=True)
+    if os.path.exists("video_descoberta.mp4"):
+        st.video("video_descoberta.mp4", autoplay=True, loop=True, muted=True)
+    st.markdown('<div class="legenda-img">Registro 1: O auditório ganhando vida em movimento.</div>', unsafe_allow_html=True)
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
@@ -240,7 +256,8 @@ else:
 <p class="texto">O projeto foi o martelo que estilhaçou todo reflexo do olhar maldoso lá de fora. O ambiente seguro mostrou que a malícia habita a mente de quem assiste, e não a pureza do movimento. Eles aprenderam que a escola é exatamente o lugar para se abrir a cabeça e derrubar essas barreiras.</p>
 ''', unsafe_allow_html=True)
     
-    st.image("foto_superacao.jpg", use_container_width=True)
+    if os.path.exists("foto_superacao.jpg"):
+        st.image("foto_superacao.jpg", use_container_width=True)
     st.markdown('<div class="legenda-img">Figura 3: O sorriso após superar o medo da primeira acrobacia.</div>', unsafe_allow_html=True)
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
@@ -254,10 +271,12 @@ else:
 
     col3, col4 = st.columns(2, gap="large")
     with col3:
-        st.image("foto_apoio.jpg", use_container_width=True)
+        if os.path.exists("foto_apoio.jpg"):
+            st.image("foto_apoio.jpg", use_container_width=True)
         st.markdown('<div class="legenda-img">Figura 4: Alunos em apoio mútuo.</div>', unsafe_allow_html=True)
     with col4:
-        st.image("foto_roda.jpg", use_container_width=True)
+        if os.path.exists("foto_roda.jpg"):
+            st.image("foto_roda.jpg", use_container_width=True)
         st.markdown('<div class="legenda-img">Figura 5: Preenchimento dos TCLEs em roda.</div>', unsafe_allow_html=True)
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
@@ -266,10 +285,12 @@ else:
     
     g_col1, g_col2 = st.columns(2, gap="large")
     with g_col1:
-        st.image("foto_movimento_1.jpg", use_container_width=True)
+        if os.path.exists("foto_movimento_1.jpg"):
+            st.image("foto_movimento_1.jpg", use_container_width=True)
         st.markdown('<div class="legenda-img">Figura 6: Formação geométrica em grupo.</div>', unsafe_allow_html=True)
     with g_col2:
-        st.image("foto_movimento_2.jpg", use_container_width=True)
+        if os.path.exists("foto_movimento_2.jpg"):
+            st.image("foto_movimento_2.jpg", use_container_width=True)
         st.markdown('<div class="legenda-img">Figura 7: Sincronia e movimento coletivo.</div>', unsafe_allow_html=True)
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
@@ -281,7 +302,8 @@ else:
 <p class="texto">E o auditório da escola já ficou pequeno. O novo sonho pulsa nas ruas da cidade: há o desejo de levar as coreografias para além dos muros da escola, nas aglomerações da cidade aos finais de semana. Apresentar a poesia da GPT para a comunidade é a forma definitiva de mostrar que a ginástica é verdadeiramente PARA TODOS.</p>
 ''', unsafe_allow_html=True)
 
-    st.image("foto_final.jpg", use_container_width=True)
+    if os.path.exists("foto_final.jpg"):
+        st.image("foto_final.jpg", use_container_width=True)
     st.markdown('<div class="legenda-img">Figura 8: Encerramento do projeto. Ginástica para Todos!</div>', unsafe_allow_html=True)
 
     st.markdown(f'<div style="margin-top: 6rem; text-align: center; border-top: 1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
