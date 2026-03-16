@@ -144,7 +144,7 @@ if not st.session_state.autenticado:
         
     st.markdown("<h1 style='font-size: 2.2rem; margin-bottom: 2rem; margin-top:0;'>Acesso Restrito</h1>", unsafe_allow_html=True)
     
-    senha_digitada = st.text_input("Senha", type="password", label_visibility="collapsed", placeholder="digite a senha (bomdia)")
+    senha_digitada = st.text_input("Senha", type="password", label_visibility="collapsed", placeholder="digite a senha")
     
     if st.button("Entrar"):
         if senha_digitada == "bomdia":
