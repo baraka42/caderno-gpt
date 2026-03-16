@@ -61,16 +61,19 @@ def alternar_dimensao():
     st.session_state.mundo_invertido = not st.session_state.mundo_invertido
     st.session_state.reset_scroll = True
 
-# Script forçado para rolar ao topo na versão mais recente do Streamlit
+# Script para rolar ao topo com atraso controlado
 if st.session_state.reset_scroll:
     components.html("""
     <script>
-        var appContainer = window.parent.document.querySelector('[data-testid="stAppViewContainer"]');
-        if (appContainer) {
-            appContainer.scrollTo({top: 0, behavior: 'instant'});
-        } else {
+        setTimeout(function() {
+            var mainNode = window.parent.document.querySelector('.main');
+            var stMain = window.parent.document.querySelector('[data-testid="stMain"]');
+            var appContainer = window.parent.document.querySelector('[data-testid="stAppViewContainer"]');
+            if (mainNode) mainNode.scrollTo({top: 0, behavior: 'instant'});
+            if (stMain) stMain.scrollTo({top: 0, behavior: 'instant'});
+            if (appContainer) appContainer.scrollTo({top: 0, behavior: 'instant'});
             window.parent.scrollTo({top: 0, behavior: 'instant'});
-        }
+        }, 150);
     </script>
     """, height=0)
     st.session_state.reset_scroll = False
@@ -162,8 +165,7 @@ else:
     .titulo-capa {{ font-size: 3.5rem !important; font-weight: 700 !important; text-align: center !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }}
     .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}}
     .dropcap::first-letter {{ float: left !important; font-size: 5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: {color_accent} !important; font-weight: 700 !important; }}
-    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; text-indent: 2.5rem !important; }}
-    .dropcap {{ text-indent: 0 !important; }}
+    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; }}
     .box-imagem-paisagem {{ aspect-ratio: 16 / 9; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
     .box-imagem-retrato {{ aspect-ratio: 9 / 16; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
     .legenda-img {{ font-size: 0.95rem !important; color: #777 !important; text-align: center !important; font-style: italic !important; margin-bottom: 2rem !important; font-family: 'Lora', serif !important; }}
@@ -176,7 +178,7 @@ else:
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
-    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 1.5rem !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
+    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
 </style>
 """, unsafe_allow_html=True)
 
