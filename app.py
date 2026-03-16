@@ -61,8 +61,18 @@ def alternar_dimensao():
     st.session_state.mundo_invertido = not st.session_state.mundo_invertido
     st.session_state.reset_scroll = True
 
+# Script forçado para rolar ao topo na versão mais recente do Streamlit
 if st.session_state.reset_scroll:
-    components.html("<script>window.parent.document.querySelector('.main').scrollTo({top: 0, behavior: 'smooth'});</script>", height=0)
+    components.html("""
+    <script>
+        var appContainer = window.parent.document.querySelector('[data-testid="stAppViewContainer"]');
+        if (appContainer) {
+            appContainer.scrollTo({top: 0, behavior: 'instant'});
+        } else {
+            window.parent.scrollTo({top: 0, behavior: 'instant'});
+        }
+    </script>
+    """, height=0)
     st.session_state.reset_scroll = False
 
 # --- VARIÁVEIS DE TEMA ---
@@ -185,29 +195,29 @@ else:
 <div class="ficha-catalografica-container">
 <div style="text-align: center; margin-bottom: 2rem;">
 <strong class="ficha-texto">Organizadores</strong><br>
-<span class="ficha-texto">Guilherme Pereira Drumond</span><br>
-<span class="ficha-texto">Priscila Lopes</span><br>
-<span class="ficha-texto">Claudia Mara Niquini</span><br><br>
+<span class="ficha-texto">Nome Sobrenome</span><br>
+<span class="ficha-texto">Nome Sobrenome</span><br>
+<span class="ficha-texto">Nome Sobrenome</span><br><br>
 <strong class="ficha-texto">Fotografia</strong><br>
-<span class="ficha-texto">Michael Harison</span><br>
-<span class="ficha-texto">Priscila Lopes</span><br><br>
+<span class="ficha-texto">Nome Sobrenome</span><br>
+<span class="ficha-texto">Nome Sobrenome</span><br><br>
 <strong class="ficha-texto">Diagramação</strong><br>
-<span class="ficha-texto">Whentony Soares Ferreira</span>
+<span class="ficha-texto">Nome Sobrenome</span>
 </div>
 <div style="text-align: center; font-size: 0.95rem;" class="ficha-texto">Elaborado com os dados fornecidos pelo(a) autor(a).</div>
 <div class="ficha-box">
 <div style="width: 50px; font-size: 0.9rem;">P745</div>
 <div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
-<span class="ficha-texto">Poética Corporal / organizadores Guilherme Pereira Drumond, Priscila Lopes, Claudia Mara Niquini; fotografia Michael Harison, Priscila Lopes; diagramação Whentony Soares Ferreira. - Diamantina: UFVJM, 2019.</span><br><br>
+<span class="ficha-texto">RELATÓRIO DA AÇÃO EXTENSIONISTA: ENTRE O PLANEJAR, O FAZER E O SONHAR / organizadores Nome Sobrenome, Nome Sobrenome, Nome Sobrenome; fotografia Nome Sobrenome, Nome Sobrenome; diagramação Nome Sobrenome. - Diamantina: UFVJM, 2024.</span><br><br>
 <span class="ficha-texto">Inclui bibliografia</span><br><br>
-<span class="ficha-texto">ISBN: 978-85-7045-050-0</span><br><br>
-<span class="ficha-texto">1. Ginástica para todos. 2. Composição coreográfica. 3. Cultura popular. I. Drumond, Guilherme Pereira. II. Lopes, Priscila. III. Niquini, Claudia Mara. IV. Harison, Michael. V. Ferreira, Whentony Soares. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
-<div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 306</div>
+<span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
+<span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Sobrenome, Nome. II. Sobrenome, Nome. III. Sobrenome, Nome. IV. Sobrenome, Nome. V. Sobrenome, Nome. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
+<div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
 </div>
 </div>
 <div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
 <span class="ficha-texto">Ficha Catalográfica – Serviço de Bibliotecas/UFVJM</span><br>
-<span class="ficha-texto">Bibliotecária Nádia Santos Barbosa – CRB-6/3468</span>
+<span class="ficha-texto">Bibliotecária Nome Sobrenome – CRB-6/1234</span>
 </div>
 </div>
 """, unsafe_allow_html=True)
