@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import base64
 import os
 
-# --- FUNÇÕES PARA BLINDAR ELEMENTOS INTERATIVOS CONTRA O BLOQUEIO DO STREAMLIT ---
+# --- FUNÇÃO PARA BLINDAR O ÁUDIO CONTRA O BLOQUEIO DO STREAMLIT ---
 def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover, fonte, texto):
     if os.path.exists(caminho):
         with open(caminho, "rb") as f:
@@ -47,8 +47,6 @@ st.set_page_config(
 )
 
 # --- INICIALIZAÇÃO DE VARIÁVEIS DE ESTADO ---
-if 'autenticado' not in st.session_state:
-    st.session_state.autenticado = False
 if 'mundo_invertido' not in st.session_state:
     st.session_state.mundo_invertido = False
 if 'reset_scroll' not in st.session_state:
@@ -104,65 +102,13 @@ else:
     color_dossie_text = "#2b2b2b"
 
 # ==============================================================================
-# 🔒 TELA DE LOGIN (BARREIRA DE ACESSO ULTRA MINIMALISTA)
-# ==============================================================================
-if not st.session_state.autenticado:
-    
-    img_login_b64_html = ""
-    if os.path.exists("login.jpg"):
-        with open("login.jpg", "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode()
-        img_login_b64_html = f'<img src="data:image/jpeg;base64,{encoded_string}" class="id-photo">'
-    
-    st.markdown(f"""
-    <style>
-        .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
-        header {{ visibility: hidden !important; }}
-        h1 {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; text-align: center; }}
-        
-        .login-box {{ max-width: 400px; margin: 5rem auto; padding: 2.5rem 2rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 8px; text-align: center; }}
-        
-        .id-photo {{
-            width: 120px !important;
-            aspect-ratio: 3 / 4 !important;
-            object-fit: cover !important;
-            display: block !important;
-            margin: 0 auto 1.5rem auto !important;
-            border: 1px solid {color_border} !important;
-            border-radius: 4px !important;
-        }}
-        
-        .stButton > button {{ background-color: transparent !important; border: 1px solid {color_accent} !important; color: {color_accent} !important; width: 100% !important; padding: 10px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 1.5rem; font-family: 'Lora', serif !important;}}
-        .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
-    </style>
-    """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    
-    if img_login_b64_html:
-        st.markdown(img_login_b64_html, unsafe_allow_html=True)
-        
-    st.markdown("<h1 style='font-size: 2.2rem; margin-bottom: 2rem; margin-top:0;'>Acesso Restrito</h1>", unsafe_allow_html=True)
-    
-    senha_digitada = st.text_input("Senha", type="password", label_visibility="collapsed", placeholder="digite a senha (bomdia)")
-    
-    if st.button("Entrar"):
-        if senha_digitada == "bomdia":
-            st.session_state.autenticado = True
-            st.rerun()
-        else:
-            st.error("Senha incorreta. Acesso negado.")
-            
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.stop()
-
-# ==============================================================================
 # 📁 LADO B: O GUIA DO PROFESSOR (Dossiê Confidencial)
 # ==============================================================================
 if st.session_state.mundo_invertido:
     st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+    html {{ scroll-behavior: smooth; }}
     .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
     .block-container {{ max-width: 900px !important; padding: 4rem 5rem !important; background-color: {bg_dossie} !important; border: 3px solid {color_border} !important; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important; }}
     h1, h2, h3, p, span, div, li {{ color: {color_dossie_text} !important; font-family: 'Special Elite', monospace !important; background: transparent !important; }}
@@ -175,19 +121,14 @@ if st.session_state.mundo_invertido:
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     
+    .numero-pagina {{ text-align: right; font-size: 0.9rem; opacity: 0.6; margin-top: 3rem; margin-bottom: -1rem; border-top: 1px dashed {color_border}; padding-top: 0.5rem; }}
+    
     /* ---> DESTRAVA DE IMPRESSÃO (CTRL+P) <--- */
     @media print {{
-        /* Esconde elementos indesejados */
         div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"] {{ display: none !important; }}
-        
-        /* Quebra as caixas de rolagem do Streamlit para imprimir tudo */
         html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"], .main {{ 
-            overflow: visible !important; 
-            height: auto !important; 
-            position: static !important; 
-            display: block !important;
+            overflow: visible !important; height: auto !important; position: static !important; display: block !important;
         }}
-        
         .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }}
         * {{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
     }}
@@ -221,6 +162,7 @@ if st.session_state.mundo_invertido:
 <p class="dossie-texto" style="font-size:2.5rem; text-align: center; margin-top: 3rem; color: #b32424 !important; font-weight:bold;">O Ranca é inevitável!</p>
 ''', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 1</div>', unsafe_allow_html=True)
     st.button("FECHAR DOSSIÊ E VOLTAR AO RELATÓRIO", on_click=alternar_dimensao)
 
 # ==============================================================================
@@ -230,11 +172,12 @@ else:
     st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+    html {{ scroll-behavior: smooth; }}
     .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
     .block-container {{ max-width: 1150px !important; padding: 6rem 5rem !important; background-color: {bg_paper} !important; box-shadow: 0 25px 70px rgba(0,0,0,0.08) !important; border: 3px solid {color_border} !important; transition: background-color 0.3s; }}
     h1, h2, h3, h4 {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; background: transparent !important; }}
     p, span, div, li {{ color: {color_text} !important; font-family: 'Lora', serif !important; background: transparent !important; }}
-    .quebra-pagina {{ margin: 6rem 0; border: none; border-top: 1px solid {color_border}; opacity: 0.7; }}
+    .quebra-pagina {{ margin: 3rem 0 6rem 0; border: none; border-top: 1px solid {color_border}; opacity: 0.7; }}
     .ornamento {{ text-align: center; color: {color_border}; font-size: 2.5rem; margin: 2rem 0; line-height: 0; }}
     .titulo-capa {{ font-size: 3.5rem !important; font-weight: 700 !important; text-align: center !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }}
     .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}}
@@ -253,35 +196,34 @@ else:
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
 
+    /* Estilos do Sumário e Paginação */
+    .numero-pagina {{ text-align: right; font-family: 'Lora', serif; font-style: italic; color: {color_text}; opacity: 0.6; margin-top: 3rem; margin-bottom: 0.5rem; font-size: 0.95rem; }}
+    .sumario-box {{ max-width: 600px; margin: 4rem auto; padding: 2rem 3rem; border: 1px solid {color_border}; border-radius: 4px; background-color: transparent; }}
+    .sumario-title {{ font-family: 'Playfair Display', serif; font-size: 1.6rem; color: {color_title}; text-align: center; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px; }}
+    .sumario-lista {{ list-style: none; padding: 0; margin: 0; }}
+    .sumario-lista li {{ margin-bottom: 1.2rem; border-bottom: 1px dotted {color_border}; display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 0.3rem; }}
+    .sumario-lista a {{ text-decoration: none; color: {color_text}; font-family: 'Lora', serif; font-size: 1.1rem; transition: color 0.3s; }}
+    .sumario-lista a:hover {{ color: {color_accent}; }}
+    .sumario-pagina {{ font-family: 'Lora', serif; color: {color_accent}; font-weight: 600; font-size: 1.1rem; }}
+
     /* ---> DESTRAVA DE IMPRESSÃO (CTRL+P) <--- */
     @media print {{
-        /* Esconde elementos indesejados */
         div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"] {{ display: none !important; }}
-        
-        /* Quebra as caixas de rolagem do Streamlit para imprimir tudo */
         html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"], .main {{ 
-            overflow: visible !important; 
-            height: auto !important; 
-            position: static !important; 
-            display: block !important;
+            overflow: visible !important; height: auto !important; position: static !important; display: block !important;
         }}
-        
-        /* Desativa as colunas Flexbox que cortam imagens */
         [data-testid="stVerticalBlock"], [data-testid="stHorizontalBlock"], [data-testid="column"] {{
             display: block !important; width: 100% !important; flex: none !important; position: relative !important; height: auto !important;
         }}
-        
         .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; background: transparent !important;}}
         * {{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
-        
-        /* Protege imagens e caixas de quebrarem no meio da folha */
-        img, video, .ficha-catalografica-container, .epigrafe-container, .box-imagem-paisagem, .box-imagem-retrato {{
+        img, video, .ficha-catalografica-container, .epigrafe-container, .box-imagem-paisagem, .box-imagem-retrato, .sumario-box {{
             page-break-inside: avoid !important; break-inside: avoid !important;
         }}
         h1, h2, h3, h4 {{ page-break-after: avoid !important; break-after: avoid !important; }}
     }}
 
-    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 0 !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
+    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 0 !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} .sumario-box {{ padding: 1.5rem; }} }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -292,6 +234,7 @@ else:
     if os.path.exists("foto_capa.jpg"):
         st.image("foto_capa.jpg", use_container_width=True)
 
+    st.markdown('<div class="numero-pagina">Capa</div>', unsafe_allow_html=True)
     st.markdown('<div class="ornamento">❧</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
@@ -326,6 +269,7 @@ else:
 </div>
 """, unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 1</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
     st.markdown('<div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">', unsafe_allow_html=True)
@@ -340,18 +284,39 @@ else:
 </div>
 ''', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 2</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">Apresentação</h2>', unsafe_allow_html=True)
+    # --- SUMÁRIO ---
+    st.markdown(f"""
+    <div class="sumario-box">
+        <div class="sumario-title">Sumário</div>
+        <ul class="sumario-lista">
+            <li><a href="#apresentacao" target="_self">Apresentação</a> <span class="sumario-pagina">4</span></li>
+            <li><a href="#o-tempo-e-o-corpo" target="_self">O Tempo e o Corpo</a> <span class="sumario-pagina">5</span></li>
+            <li><a href="#galeria-a-descoberta" target="_self">Galeria: A Descoberta</a> <span class="sumario-pagina">6</span></li>
+            <li><a href="#vencendo-o-medo-do-desconhecido-e-o-preconceito" target="_self">Vencendo o Medo e o Preconceito</a> <span class="sumario-pagina">7</span></li>
+            <li><a href="#construindo-o-coletivo-paci-ncia" target="_self">Construindo o Coletivo: Paciência</a> <span class="sumario-pagina">8</span></li>
+            <li><a href="#galeria-o-movimento-coletivo" target="_self">Galeria: O Movimento Coletivo</a> <span class="sumario-pagina">9</span></li>
+            <li><a href="#a-semente-o-futuro-da-gpt-na-escola" target="_self">A Semente: O Futuro da GPT na Escola</a> <span class="sumario-pagina">10</span></li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="numero-pagina">Pág. 3</div>', unsafe_allow_html=True)
+    st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
+
+    st.markdown('<h2 id="apresentacao" class="subtitulo-capitulo">Apresentação</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto dropcap">Neste caderno, datas e ponteiros do relógio importam menos do que as transformações que ocorreram nos espaços da Escola Estadual Professora Ayna Torres. A Ginástica para Todos (GPT) não foi apenas uma sequência de aulas práticas; foi um desafio, foi mudança, foi conflito e foi divertido demais!</p>
 <p class="texto">Deixamos os relatos cronológicos de lado para organizar nossas memórias através dos sentimentos, das barreiras quebradas e das conquistas coletivas.</p>
 ''', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 4</div>', unsafe_allow_html=True)
     st.markdown('<div class="ornamento">❧</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">O Tempo e o Corpo</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 id="o-tempo-e-o-corpo" class="subtitulo-capitulo">O Tempo e o Corpo</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1], gap="large")
     with col1:
@@ -365,9 +330,10 @@ else:
             st.image("foto_contraste.jpg", use_container_width=True)
         st.markdown('<div class="legenda-img">Figura 2: Alunos entrando no auditório e descobrindo os colchonetes.</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 5</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: A Descoberta</h3>', unsafe_allow_html=True)
+    st.markdown(f'<h3 id="galeria-a-descoberta" style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: A Descoberta</h3>', unsafe_allow_html=True)
     
     if os.path.exists("video_descoberta.mp4"):
         with open("video_descoberta.mp4", "rb") as f:
@@ -382,9 +348,10 @@ else:
         
     st.markdown('<div class="legenda-img">Registro 1: O auditório ganhando vida em movimento.</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 6</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">Vencendo o Medo do Desconhecido e o Preconceito</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 id="vencendo-o-medo-do-desconhecido-e-o-preconceito" class="subtitulo-capitulo">Vencendo o Medo do Desconhecido e o Preconceito</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Talvez a maior acrobacia realizada neste projeto não tenha sido física. O colchonete revelou que muitos de nós somos prisioneiros dos nossos próprios medos. Os alunos descobriram que o bloqueio mental é o verdadeiro causador de lesões: quando a gente evita o movimento por medo de se machucar, acaba se machucando.</p>
 <p class="texto">Havia preconceito a ser quebrados. O julgamento da sociedade pesava, rotulando quem praticava a ginástica com termos pejorativos. As meninas e os meninos enfrentavam o medo da sexualização e do olhar malicioso diante do básico: posições de quatro apoios e espacates, consideradas equivocadamente “vulgares”.</p>
@@ -395,9 +362,10 @@ else:
         st.image("foto_superacao.jpg", use_container_width=True)
     st.markdown('<div class="legenda-img">Figura 3: O sorriso após superar o medo da primeira acrobacia.</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 7</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 id="construindo-o-coletivo-paci-ncia" class="subtitulo-capitulo">Construindo o Coletivo: Paciência</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
 <p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execução precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
@@ -414,9 +382,10 @@ else:
             st.image("foto_roda.jpg", use_container_width=True)
         st.markdown('<div class="legenda-img">Figura 5: Preenchimento dos TCLEs em roda.</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 8</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown(f'<h3 style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: O Movimento Coletivo</h3>', unsafe_allow_html=True)
+    st.markdown(f'<h3 id="galeria-o-movimento-coletivo" style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: O Movimento Coletivo</h3>', unsafe_allow_html=True)
     
     g_col1, g_col2 = st.columns(2, gap="large")
     with g_col1:
@@ -428,9 +397,10 @@ else:
             st.image("foto_movimento_2.jpg", use_container_width=True)
         st.markdown('<div class="legenda-img">Figura 7: Sincronia e movimento coletivo.</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 9</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">A Semente: O Futuro da GPT na Escola</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 id="a-semente-o-futuro-da-gpt-na-escola" class="subtitulo-capitulo">A Semente: O Futuro da GPT na Escola</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">O fim do projeto é, na verdade, um começo. Transformados pela flexibilidade que ganharam no corpo e na mente, os alunos sonham mais alto.</p>
 <p class="texto">Há um desejo de plantar essa semente, levando a GPT para as crianças do 6º ano do ensino fundamental. Eles sabem que corpos mais jovens absorvem o movimento mais rápido e que mentes mais novas podem crescer blindadas contra os preconceitos que eles próprios tiveram que desconstruir.</p>
@@ -441,6 +411,7 @@ else:
         st.image("foto_final.jpg", use_container_width=True)
     st.markdown('<div class="legenda-img">Figura 8: Encerramento do projeto. Ginástica para Todos!</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="numero-pagina">Pág. 10</div>', unsafe_allow_html=True)
     st.markdown(f'<div style="margin-top: 2rem; text-align: center; border-top: 1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
     st.button("ACESSAR ANEXO CONFIDENCIAL", on_click=alternar_dimensao)
     st.markdown('</div>', unsafe_allow_html=True)
