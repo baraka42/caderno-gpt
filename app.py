@@ -33,7 +33,7 @@ def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover
             <audio id="player" loop>
               <source src="data:audio/mp3;base64,{b64}" type="audio/mpeg">
             </audio>
-            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='PAUSAR TRILHA';}} else {{a.pause(); this.innerText='{texto.upper()}';}}">{texto.upper()}</button>
+            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='PAUSAR TRILHA';}} else {{a.pause(); this.innerText='{texto.upper()}';}}">▶ {texto.upper()}</button>
         </body>
         </html>
         """
@@ -54,7 +54,7 @@ if 'mundo_invertido' not in st.session_state:
 if 'reset_scroll' not in st.session_state:
     st.session_state.reset_scroll = False
 
-# --- CONTROLE DE MODO NOTURNO (PADRÃO ATIVADO) ---
+# --- CONTROLE DE MODO NOTURNO (COM MEMÓRIA) ---
 col_vazia, col_toggle = st.columns([8, 2])
 with col_toggle:
     modo_noturno = st.toggle("Modo Noturno", value=True)
@@ -108,7 +108,6 @@ else:
 # ==============================================================================
 if not st.session_state.autenticado:
     
-    # Processa a imagem 3x4 minimalista para injeção HTML
     img_login_b64_html = ""
     if os.path.exists("login.jpg"):
         with open("login.jpg", "rb") as image_file:
@@ -118,33 +117,22 @@ if not st.session_state.autenticado:
     st.markdown(f"""
     <style>
         .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
+        header {{ visibility: hidden !important; }}
+        h1 {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; text-align: center; }}
         
-        /* Oculta completamente os controles de modo noturno na tela de login para limpeza total */
-        div[data-testid="stAppViewContainer"] > div:first-child {{
-            display: none !important;
-        }}
+        .login-box {{ max-width: 400px; margin: 5rem auto; padding: 2.5rem 2rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 8px; text-align: center; }}
         
-        h1, p {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; text-align: center; }}
-        .login-box {{ max-width: 400px; margin: 6rem auto; padding: 2.5rem 2rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 8px; transition: background-color 0.3s, border 0.3s; text-align: center; }}
-        
-        /* Estilo rigoroso para a foto 3x4 minimalista */
         .id-photo {{
             width: 120px !important;
             aspect-ratio: 3 / 4 !important;
             object-fit: cover !important;
             display: block !important;
-            margin: 0 auto 2rem auto !important;
+            margin: 0 auto 1.5rem auto !important;
             border: 1px solid {color_border} !important;
             border-radius: 4px !important;
         }}
         
-        /* Remove o retângulo preto e o espaço extra entre a imagem e o título */
-        .login-box img + h1 {{
-            margin-top: 0 !important;
-            margin-bottom: 2rem !important;
-        }}
-        
-        .stButton > button {{ background-color: transparent !important; border: 1px solid {color_accent} !important; color: {color_accent} !important; width: 100% !important; padding: 10px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem; font-family: 'Lora', serif !important;}}
+        .stButton > button {{ background-color: transparent !important; border: 1px solid {color_accent} !important; color: {color_accent} !important; width: 100% !important; padding: 10px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 1.5rem; font-family: 'Lora', serif !important;}}
         .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
     </style>
     """, unsafe_allow_html=True)
@@ -154,9 +142,8 @@ if not st.session_state.autenticado:
     if img_login_b64_html:
         st.markdown(img_login_b64_html, unsafe_allow_html=True)
         
-    st.markdown("<h1 style='font-size: 2.5rem;'>Acesso Restrito</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='font-size: 2.2rem; margin-bottom: 2rem; margin-top:0;'>Acesso Restrito</h1>", unsafe_allow_html=True)
     
-    # Campo para digitar a senha com placeholder atualizado e minimalista
     senha_digitada = st.text_input("Senha", type="password", label_visibility="collapsed", placeholder="digite a senha (bomdia)")
     
     if st.button("Entrar"):
@@ -299,6 +286,7 @@ else:
     if os.path.exists("foto_epigrafe.jpg"):
         st.image("foto_epigrafe.jpg", use_container_width=True)
     st.markdown('''
+<div class="legenda-img" style="margin-bottom: 3rem;">Figura 1: A leveza e o preparo do movimento.</div>
 <div class="epigrafe-container">
 <p class="epigrafe-texto">"Enquanto o tempo acelera e pede pressa<br>Eu me recuso, faço hora, vou na valsa<br>A vida é tão rara"</p>
 <p class="epigrafe-autor">— Paciência, Lenine</p>
