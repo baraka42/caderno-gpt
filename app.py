@@ -33,7 +33,7 @@ def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover
             <audio id="player" loop>
               <source src="data:audio/mp3;base64,{b64}" type="audio/mpeg">
             </audio>
-            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='⏸ PAUSAR TRILHA';}} else {{a.pause(); this.innerText='▶ {texto.upper()}';}}">▶ {texto.upper()}</button>
+            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='PAUSAR TRILHA';}} else {{a.pause(); this.innerText='{texto.upper()}';}}">{texto.upper()}</button>
         </body>
         </html>
         """
@@ -54,10 +54,10 @@ if 'mundo_invertido' not in st.session_state:
 if 'reset_scroll' not in st.session_state:
     st.session_state.reset_scroll = False
 
-# --- CONTROLE DE MODO NOTURNO ---
+# --- CONTROLE DE MODO NOTURNO (PADRÃO ATIVADO) ---
 col_vazia, col_toggle = st.columns([8, 2])
 with col_toggle:
-    modo_noturno = st.toggle("Modo Noturno")
+    modo_noturno = st.toggle("Modo Noturno", value=True)
 
 # --- CONTROLE DE NAVEGAÇÃO E SCROLL ---
 def alternar_dimensao():
@@ -104,21 +104,25 @@ else:
     color_dossie_text = "#2b2b2b"
 
 # ==============================================================================
-# 🔒 TELA DE LOGIN (BARREIRA DE ACESSO)
+# TELA DE LOGIN (BARREIRA DE ACESSO)
 # ==============================================================================
 if not st.session_state.autenticado:
     st.markdown(f"""
     <style>
         .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
         h1, p {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; text-align: center; }}
-        .login-box {{ max-width: 400px; margin: 4rem auto; padding: 3rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-radius: 8px; transition: background-color 0.3s, border 0.3s; }}
+        .login-box {{ max-width: 450px; margin: 4rem auto; padding: 2.5rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 8px; transition: background-color 0.3s, border 0.3s; }}
         .stButton > button {{ background-color: transparent !important; border: 1px solid {color_accent} !important; color: {color_accent} !important; width: 100% !important; padding: 10px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 1rem; font-family: 'Lora', serif !important;}}
         .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
     </style>
     """, unsafe_allow_html=True)
     
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.markdown("<h1>Acesso Restrito</h1>", unsafe_allow_html=True)
+    
+    if os.path.exists("login.jpg"):
+        st.image("login.jpg", use_container_width=True)
+        
+    st.markdown("<h1 style='margin-top: 1rem;'>Acesso Restrito</h1>", unsafe_allow_html=True)
     st.markdown("<p style='margin-bottom: 2rem; font-family: Lora, serif !important; color: " + color_text + " !important;'>Insira a credencial para acessar o Caderno Didático.</p>", unsafe_allow_html=True)
     
     senha_digitada = st.text_input("Senha", type="password", label_visibility="collapsed", placeholder="Digite a senha...")
@@ -131,7 +135,7 @@ if not st.session_state.autenticado:
             st.error("Senha incorreta. Acesso negado.")
             
     st.markdown('</div>', unsafe_allow_html=True)
-    st.stop() # Bloqueia a execução do código abaixo se não estiver autenticado
+    st.stop()
 
 # ==============================================================================
 # LADO B: O GUIA DO PROFESSOR (Dossiê Confidencial)
@@ -143,13 +147,13 @@ if st.session_state.mundo_invertido:
     .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
     .block-container {{ max-width: 900px !important; padding: 4rem 5rem !important; background-color: {bg_dossie} !important; border: 3px solid {color_border} !important; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important; }}
     h1, h2, h3, p, span, div, li {{ color: {color_dossie_text} !important; font-family: 'Special Elite', monospace !important; background: transparent !important; }}
-    .dossie-texto {{ font-size: 1.25rem !important; line-height: 1.8 !important; text-align: justify !important; margin-bottom: 1.5rem !important; }}
+    .dossie-texto {{ font-size: 1.25rem !important; line-height: 1.8 !important; text-align: justify !important; margin-bottom: 1.5rem !important; text-indent: 0 !important; }}
     .carimbo {{ color: #b32424 !important; border: 4px solid #b32424 !important; padding: 10px 20px !important; font-size: 3rem !important; text-transform: uppercase !important; transform: rotate(-3deg); display: inline-block !important; margin-bottom: 2rem !important; opacity: 0.8 !important;}}
     .marca-texto {{ background-color: #e6d97e !important; color: #111 !important; padding: 0 5px !important; }}
     .censura {{ background-color: #1a1a1a !important; color: #1a1a1a !important; padding: 0 5px !important; border-radius: 2px; transition: 0.3s; }}
     .censura:hover {{ color: #fff !important; cursor: help; }}
     header, footer {{ visibility: hidden !important; }}
-    .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s;}}
+    .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1.5rem !important; border: 2px solid {color_border} !important;}} .carimbo {{ font-size: 2rem !important; }} .dossie-texto {{ font-size: 1.1rem !important; }} }}
 </style>
@@ -198,20 +202,20 @@ else:
     .titulo-capa {{ font-size: 3.5rem !important; font-weight: 700 !important; text-align: center !important; line-height: 1.2 !important; margin-bottom: 1rem !important; }}
     .subtitulo-capitulo {{ font-size: 2.2rem !important; color: {color_accent} !important; border-bottom: 1px solid {color_border} !important; padding-bottom: 0.8rem !important; margin-top: 1rem !important; margin-bottom: 2.5rem !important; font-style: italic !important;}}
     .dropcap::first-letter {{ float: left !important; font-size: 5rem !important; line-height: 0.8 !important; padding-top: 8px !important; padding-right: 12px !important; color: {color_accent} !important; font-weight: 700 !important; }}
-    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; }}
+    .texto {{ text-align: justify !important; font-size: 1.2rem !important; line-height: 1.8 !important; margin-bottom: 1.5rem !important; text-indent: 0 !important; }}
     .box-imagem-paisagem {{ aspect-ratio: 16 / 9; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
     .box-imagem-retrato {{ aspect-ratio: 9 / 16; background-color: {bg_img_box} !important; border: 1px dashed #bbb !important; border-radius: 4px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important; width: 100% !important; margin: 1rem 0 0.5rem 0 !important; padding: 10px !important; }}
     .legenda-img {{ font-size: 0.95rem !important; color: #777 !important; text-align: center !important; font-style: italic !important; margin-bottom: 2rem !important; font-family: 'Lora', serif !important; }}
-    .ficha-catalografica-container {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; max-width: 650px; margin: 4rem auto; font-size: 1rem; }}
+    .ficha-catalografica-container {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; max-width: 650px; margin: 4rem auto; font-size: 1rem; text-indent: 0 !important;}}
     .ficha-box {{ border: 1px solid {color_text} !important; padding: 1.5rem; display: flex; margin-top: 1.5rem; margin-bottom: 1.5rem; }}
     .ficha-texto {{ font-family: 'Times New Roman', Times, serif !important; color: {color_text} !important; }}
     .epigrafe-container {{ text-align: center; margin-bottom: 2rem; }}
-    .epigrafe-texto {{ font-family: 'Playfair Display', serif !important; font-size: 1.1rem !important; font-style: italic !important; color: {color_accent} !important; line-height: 1.4 !important; margin-bottom: 0.5rem !important;}}
-    .epigrafe-autor {{ font-family: 'Lora', serif !important; font-size: 0.85rem !important; color: #777 !important; text-transform: uppercase; letter-spacing: 1px;}}
+    .epigrafe-texto {{ font-family: 'Playfair Display', serif !important; font-size: 1.1rem !important; font-style: italic !important; color: {color_accent} !important; line-height: 1.4 !important; margin-bottom: 0.5rem !important; text-indent: 0 !important;}}
+    .epigrafe-autor {{ font-family: 'Lora', serif !important; font-size: 0.85rem !important; color: #777 !important; text-transform: uppercase; letter-spacing: 1px; text-indent: 0 !important;}}
     header, footer {{ visibility: hidden !important; }}
-    .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s;}}
+    .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
-    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
+    @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 0 !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -263,6 +267,7 @@ else:
     if os.path.exists("foto_epigrafe.jpg"):
         st.image("foto_epigrafe.jpg", use_container_width=True)
     st.markdown('''
+<div class="legenda-img" style="margin-bottom: 3rem;">Figura 1: A leveza e o preparo do movimento.</div>
 <div class="epigrafe-container">
 <p class="epigrafe-texto">"Enquanto o tempo acelera e pede pressa<br>Eu me recuso, faço hora, vou na valsa<br>A vida é tão rara"</p>
 <p class="epigrafe-autor">— Paciência, Lenine</p>
@@ -281,7 +286,7 @@ else:
     st.markdown('<div class="ornamento">❧</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">O Tempo e o Corpo</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">O Peso do Tempo e o Despertar do Corpo</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1], gap="large")
     with col1:
@@ -327,7 +332,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência e Fraternidade</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
 <p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execução precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
@@ -338,7 +343,7 @@ else:
     with col3:
         if os.path.exists("foto_apoio.jpg"):
             st.image("foto_apoio.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 4: Alunos se divertindo.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="legenda-img">Figura 4: Alunos em apoio mútuo.</div>', unsafe_allow_html=True)
     with col4:
         if os.path.exists("foto_roda.jpg"):
             st.image("foto_roda.jpg", use_container_width=True)
@@ -360,7 +365,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">A Semente: O Futuro da GPT na Escola</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">A Semente que rola: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">O fim do projeto é, na verdade, um começo. Transformados pela flexibilidade que ganharam no corpo e na mente, os alunos sonham mais alto.</p>
 <p class="texto">Há um desejo de plantar essa semente, levando a GPT para as crianças do 6º ano do ensino fundamental. Eles sabem que corpos mais jovens absorvem o movimento mais rápido e que mentes mais novas podem crescer blindadas contra os preconceitos que eles próprios tiveram que desconstruir.</p>
