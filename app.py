@@ -104,14 +104,35 @@ else:
     color_dossie_text = "#2b2b2b"
 
 # ==============================================================================
-# TELA DE LOGIN (BARREIRA DE ACESSO)
+# 🔒 TELA DE LOGIN (BARREIRA DE ACESSO)
 # ==============================================================================
 if not st.session_state.autenticado:
+    
+    # Processa a imagem 3x4 minimalista antes de renderizar o HTML
+    img_login_b64_html = ""
+    if os.path.exists("login.jpg"):
+        with open("login.jpg", "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode()
+        # Define a classe id-photo para controle rigoroso de tamanho
+        img_login_b64_html = f'<img src="data:image/jpeg;base64,{encoded_string}" class="id-photo">'
+    
     st.markdown(f"""
     <style>
         .stApp {{ background-color: {bg_app} !important; transition: background-color 0.3s; }}
         h1, p {{ color: {color_title} !important; font-family: 'Playfair Display', serif !important; text-align: center; }}
-        .login-box {{ max-width: 450px; margin: 4rem auto; padding: 2.5rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 8px; transition: background-color 0.3s, border 0.3s; }}
+        .login-box {{ max-width: 450px; margin: 4rem auto; padding: 3rem 2.5rem; background-color: {bg_paper}; border: 1px solid {color_border}; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 8px; transition: background-color 0.3s, border 0.3s; }}
+        
+        /* Estilo rigoroso para a foto 3x4 minimalista */
+        .id-photo {{
+            width: 120px !important; /* Tamanho web simulando 3cm */
+            aspect-ratio: 3 / 4 !important; /* Proporção 3x4 rigorosa */
+            object-fit: cover !important; /* Garante que a imagem preencha sem distorcer */
+            display: block !important;
+            margin: 0 auto 1.5rem auto !important; /* Centraliza horizontalmente e dá margem inferior */
+            border: 1px solid {color_border} !important; /* Adiciona uma borda sutil */
+            border_radius: 4px !important;
+        }}
+        
         .stButton > button {{ background-color: transparent !important; border: 1px solid {color_accent} !important; color: {color_accent} !important; width: 100% !important; padding: 10px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 1rem; font-family: 'Lora', serif !important;}}
         .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
     </style>
@@ -119,10 +140,11 @@ if not st.session_state.autenticado:
     
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
     
-    if os.path.exists("login.jpg"):
-        st.image("login.jpg", use_container_width=True)
+    # Renderiza o HTML da foto 3x4 se existir
+    if img_login_b64_html:
+        st.markdown(img_login_b64_html, unsafe_allow_html=True)
         
-    st.markdown("<h1 style='margin-top: 1rem;'>Acesso Restrito</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='margin-top: 1rem; font-size: 2.2rem;'>Acesso Restrito</h1>", unsafe_allow_html=True)
     st.markdown("<p style='margin-bottom: 2rem; font-family: Lora, serif !important; color: " + color_text + " !important;'>Insira a credencial para acessar o Caderno Didático.</p>", unsafe_allow_html=True)
     
     senha_digitada = st.text_input("Senha", type="password", label_visibility="collapsed", placeholder="Digite a senha...")
@@ -138,7 +160,7 @@ if not st.session_state.autenticado:
     st.stop()
 
 # ==============================================================================
-# LADO B: O GUIA DO PROFESSOR (Dossiê Confidencial)
+# 📁 LADO B: O GUIA DO PROFESSOR (Dossiê Confidencial)
 # ==============================================================================
 if st.session_state.mundo_invertido:
     st.markdown(f"""
@@ -177,7 +199,7 @@ if st.session_state.mundo_invertido:
 <p class="dossie-texto" style="text-align: center; font-size: 2rem; color: #b32424 !important; font-weight:bold; transform: rotate(1deg);">Alguém abriu o portão da quadra.</p>
 <p class="dossie-texto">Não foi um evento grandioso. Não teve anúncio, não teve alarde. Foi só um portão se abrindo. Mas, para quem tem intimidade com escola, sabe que aquilo é equivalente ao sinal do recreio em dia que a merenda é cachorro-quente. Mais que depressa, a maioria dos alunos bateu em retirada. Não foi desinteresse, não foi maldade. Foi pura e simplesmente a força da gravidade local agindo. Eles correram para a quadra em busca de outra dose para saciar a coceira das pernas. O Ranca.</p>
 <p class="dossie-texto">Lá no auditório, esperei. E esperei. E continuei esperando.</p>
-<p class="dossie-texto">No final, alguns poucos alunos restaram. Não eram necessariamente os mais interessados em ginástica. Eram, muito provavelmente, os que sentiram vergonha de me deixar falando sozinho. Eles ficaram até o fim, ouviram a explicação inteira, nunca tinha testemunhado tamanha delicadeza, alguns até acenaram com a cabeça em momentos estratégicos.</p>
+<p class="dossie-texto">No final, alguns poucos alunos restaram. Não eram necessariamente os mais interessados in ginástica. Eram, muito provavelmente, os que sentiram vergonha de me deixar falando sozinho. Eles ficaram até o fim, ouviram a explicação inteira, nunca tinha testemunhado tamanha delicadeza, alguns até acenaram com a cabeça em momentos estratégicos.</p>
 <p class="dossie-texto">Lá fora, no chão quente da quadra, o Ranca rugia.</p>
 <p class="dossie-texto">E eu entendi, naquele dia, que o universo tem suas próprias leis. Você pode planejar, convidar, explicar, demonstrar. Pode ir de sala em sala no horário do almoço, abordar aluno por aluno nos corredores. Pode ser o sujeito mais otimista e sonhador da face da Terra.</p>
 <p class="dossie-texto">Mas se alguém abrir o portão da quadra, não adianta.</p>
@@ -267,7 +289,6 @@ else:
     if os.path.exists("foto_epigrafe.jpg"):
         st.image("foto_epigrafe.jpg", use_container_width=True)
     st.markdown('''
-<div class="legenda-img" style="margin-bottom: 3rem;">Figura 1: A leveza e o preparo do movimento.</div>
 <div class="epigrafe-container">
 <p class="epigrafe-texto">"Enquanto o tempo acelera e pede pressa<br>Eu me recuso, faço hora, vou na valsa<br>A vida é tão rara"</p>
 <p class="epigrafe-autor">— Paciência, Lenine</p>
@@ -286,14 +307,14 @@ else:
     st.markdown('<div class="ornamento">❧</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">O Peso do Tempo e o Despertar do Corpo</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">O Tempo e o Corpo</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1], gap="large")
     with col1:
         st.markdown('''
 <p class="texto">O tempo no Ensino Médio em Tempo Integral (EMTI) pode ser um rio longo, denso e exaustivo. Permanecer quase dez horas no ambiente escolar exige muito dos estudantes, um esforço que, nas palavras deles, "acaba com qualquer um" e exige muita coluna.</p>
-<p class="texto">O longo intervalo do almoço era vencido por corpos sentados, intermináveis partidas de Truco e prática deliberada de Futsal. Não que ficar sentado após o almoço seja algo negativo, na verdade é o fisiologicamente recomendado. Mas intervalo de almoço é verdadeiramente longo e visto como tedioso pelos alunos.</p>
-<p class="texto">O convite para o movimento encontrou, de início, a resistência natural de quem teme o novo. No primeiro dia de projeto, quando o portão se abriu, muitos alunos bateram em retirada para a quadra, buscando o conforto das práticas habituais. Mas com insistência, apoio dos bolsistas do PIBID e alguns vídeos legais, a semente da curiosidade foi plantada. Aos poucos, a rotina foi quebrada, e o auditório virou um refúgio de leveza onde o tempo, antes arrastado, passou a voar.</p>
+<p class="texto">O longo intervalo do almoço era vencido por corpos sentados, intermináveis partidas de Truco e prática deliberada de Futsal. No que ficar sentado após o almoço seja algo negativo, na verdade é o fisiologicamente recomendado. Mas intervalo de almoço é verdadeiramente longo e visto como tedioso pelos alunos.</p>
+<p class="texto">O convite para o movemento encontrou, de início, a resistência natural de quem teme o novo. No primeiro dia de projeto, quando o portão se abriu, muitos alunos bateram em retirada para a quadra, buscando o conforto das práticas habituais. Mas com insistência, apoio dos bolsistas do PIBID e alguns vídeos legais, a semente da curiosidade foi plantada. Aos poucos, a rotina foi quebrada, e o auditório virou um refúgio de leveza onde o tempo, antes arrastado, passou a voar.</p>
 ''', unsafe_allow_html=True)
     with col2:
         if os.path.exists("foto_contraste.jpg"):
@@ -332,7 +353,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência e Fraternidade</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
 <p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execução precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
@@ -343,7 +364,7 @@ else:
     with col3:
         if os.path.exists("foto_apoio.jpg"):
             st.image("foto_apoio.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 4: Alunos em apoio mútuo.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="legenda-img">Figura 4: Alunos se divertindo.</div>', unsafe_allow_html=True)
     with col4:
         if os.path.exists("foto_roda.jpg"):
             st.image("foto_roda.jpg", use_container_width=True)
@@ -365,7 +386,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">A Semente que rola: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">A Semente: O Futuro da GPT na Escola</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">O fim do projeto é, na verdade, um começo. Transformados pela flexibilidade que ganharam no corpo e na mente, os alunos sonham mais alto.</p>
 <p class="texto">Há um desejo de plantar essa semente, levando a GPT para as crianças do 6º ano do ensino fundamental. Eles sabem que corpos mais jovens absorvem o movimento mais rápido e que mentes mais novas podem crescer blindadas contra os preconceitos que eles próprios tiveram que desconstruir.</p>
