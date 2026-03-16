@@ -248,7 +248,7 @@ else:
     st.markdown('<div class="ornamento">❧</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">O Peso do Tempo e o Despertar do Corpo</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">O Tempo e o Corpo</h2>', unsafe_allow_html=True)
     
     col1, col2 = st.columns([1.2, 1], gap="large")
     with col1:
@@ -294,7 +294,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência e Fraternidade</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
 <p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execução precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
@@ -305,7 +305,7 @@ else:
     with col3:
         if os.path.exists("foto_apoio.jpg"):
             st.image("foto_apoio.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 4: Alunos em apoio mútuo.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="legenda-img">Figura 4: Alunos se divertindo.</div>', unsafe_allow_html=True)
     with col4:
         if os.path.exists("foto_roda.jpg"):
             st.image("foto_roda.jpg", use_container_width=True)
@@ -327,7 +327,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown('<h2 class="subtitulo-capitulo">A Semente: O Futuro da GPT no Coletivo</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitulo-capitulo">A Semente: O Futuro da GPT na Escola</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">O fim do projeto é, na verdade, um começo. Transformados pela flexibilidade que ganharam no corpo e na mente, os alunos sonham mais alto.</p>
 <p class="texto">Há um desejo de plantar essa semente, levando a GPT para as crianças do 6º ano do ensino fundamental. Eles sabem que corpos mais jovens absorvem o movimento mais rápido e que mentes mais novas podem crescer blindadas contra os preconceitos que eles próprios tiveram que desconstruir.</p>
