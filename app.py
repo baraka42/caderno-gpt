@@ -174,6 +174,24 @@ if st.session_state.mundo_invertido:
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
+    
+    /* ---> DESTRAVA DE IMPRESSÃO (CTRL+P) <--- */
+    @media print {{
+        /* Esconde elementos indesejados */
+        div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"] {{ display: none !important; }}
+        
+        /* Quebra as caixas de rolagem do Streamlit para imprimir tudo */
+        html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"], .main {{ 
+            overflow: visible !important; 
+            height: auto !important; 
+            position: static !important; 
+            display: block !important;
+        }}
+        
+        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }}
+        * {{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
+    }}
+    
     @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1.5rem !important; border: 2px solid {color_border} !important;}} .carimbo {{ font-size: 2rem !important; }} .dossie-texto {{ font-size: 1.1rem !important; }} }}
 </style>
 """, unsafe_allow_html=True)
@@ -234,6 +252,35 @@ else:
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
+
+    /* ---> DESTRAVA DE IMPRESSÃO (CTRL+P) <--- */
+    @media print {{
+        /* Esconde elementos indesejados */
+        div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"] {{ display: none !important; }}
+        
+        /* Quebra as caixas de rolagem do Streamlit para imprimir tudo */
+        html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"], .main {{ 
+            overflow: visible !important; 
+            height: auto !important; 
+            position: static !important; 
+            display: block !important;
+        }}
+        
+        /* Desativa as colunas Flexbox que cortam imagens */
+        [data-testid="stVerticalBlock"], [data-testid="stHorizontalBlock"], [data-testid="column"] {{
+            display: block !important; width: 100% !important; flex: none !important; position: relative !important; height: auto !important;
+        }}
+        
+        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; background: transparent !important;}}
+        * {{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
+        
+        /* Protege imagens e caixas de quebrarem no meio da folha */
+        img, video, .ficha-catalografica-container, .epigrafe-container, .box-imagem-paisagem, .box-imagem-retrato {{
+            page-break-inside: avoid !important; break-inside: avoid !important;
+        }}
+        h1, h2, h3, h4 {{ page-break-after: avoid !important; break-after: avoid !important; }}
+    }}
+
     @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 0 !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
 </style>
 """, unsafe_allow_html=True)
@@ -353,7 +400,7 @@ else:
     st.markdown('<h2 class="subtitulo-capitulo">Construindo o Coletivo: Paciência</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto">Diferente da frieza das competições tradicionais, a GPT não carrega a balança dos jurados, as notas ou a rivalidade que cria inimizades. Sem a pressão de ser o melhor, o que floresceu foi a empatia.</p>
-<p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execution precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
+<p class="texto">O corpo aprendeu novas rimas: pontes, velas, rolamentos à frente, saltos grupados, afastados e a execução precisa da estrelinha. Mas a alma aprendeu a virtude da paciência. A orientação calma ensinou os alunos a terem cautela com a dificuldade do outro. Rapidamente, eles mesmos começaram a se ajudar e a compreender que ninguém é igual a ninguém.</p>
 <p class="texto">As coreografias geométricas não foram apenas demonstrações físicas, mas a prova de que cada corpo, com seu próprio ritmo, é essencial para manter a figura acrobática em pé. A ginástica uniu diferenças em um só movimento, respeitando o espaço e o limite de cada um.</p>
 ''', unsafe_allow_html=True)
 
