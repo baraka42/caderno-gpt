@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import base64
 import os
 
-# --- FUNÇÕES PARA BLINDAR ELEMENTOS INTERATIVOS CONTRA O BLOQUEIO DO STREAMLIT ---
+# --- FUNÇÃO PARA BLINDAR O ÁUDIO CONTRA O BLOQUEIO DO STREAMLIT ---
 def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover, fonte, texto):
     if os.path.exists(caminho):
         with open(caminho, "rb") as f:
@@ -33,7 +33,7 @@ def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover
             <audio id="player" loop>
               <source src="data:audio/mp3;base64,{b64}" type="audio/mpeg">
             </audio>
-            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='PAUSAR TRILHA';}} else {{a.pause(); this.innerText='{texto.upper()}';}}">▶ {texto.upper()}</button>
+            <button class="btn-audio" onclick="var a=document.getElementById('player'); if(a.paused){{a.play(); this.innerText='PAUSAR TRILHA';}} else {{a.pause(); this.innerText='▶ {texto.upper()}';}}">▶ {texto.upper()}</button>
         </body>
         </html>
         """
@@ -204,11 +204,13 @@ if st.session_state.mundo_invertido:
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     
-    /* Ocultar iframes e botões na impressão */
+    /* REGRAS REFINADAS DE IMPRESSÃO - LADO B */
     @media print {{
-        .stButton, iframe, div[data-testid="stToolbar"] {{ display: none !important; }}
-        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; }}
+        div[data-testid="stToolbar"], header, footer, .stButton, iframe, div[data-testid="stToggle"], div[data-testid="stCheckbox"] {{ display: none !important; }}
+        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }}
         body, .stApp {{ background-color: transparent !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
+        .dossie-texto, h2 {{ page-break-inside: avoid !important; break-inside: avoid !important; }}
+        ::-webkit-scrollbar {{ display: none !important; }}
     }}
     
     @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1.5rem !important; border: 2px solid {color_border} !important;}} .carimbo {{ font-size: 2rem !important; }} .dossie-texto {{ font-size: 1.1rem !important; }} }}
@@ -276,11 +278,29 @@ else:
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
 
-    /* Ocultar iframes e botões na impressão */
+    /* REGRAS REFINADAS DE IMPRESSÃO - LADO A */
     @media print {{
-        .stButton, iframe, div[data-testid="stToolbar"] {{ display: none !important; }}
-        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; }}
+        div[data-testid="stToolbar"], header, footer, .stButton, iframe, div[data-testid="stToggle"], div[data-testid="stCheckbox"] {{ display: none !important; }}
+        .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }}
         body, .stApp {{ background-color: transparent !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
+        
+        /* Força quebra de página real na impressão */
+        .quebra-pagina {{
+            page-break-after: always !important;
+            break-after: page !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 0 !important;
+        }}
+        
+        /* Impede corte de parágrafos e imagens ao meio */
+        h1, h2, h3, h4 {{ page-break-after: avoid !important; break-after: avoid !important; }}
+        p, .box-imagem-paisagem, .box-imagem-retrato, img, video, .ficha-catalografica-container {{ 
+            page-break-inside: avoid !important; 
+            break-inside: avoid !important; 
+        }}
+        ::-webkit-scrollbar {{ display: none !important; }}
     }}
 
     @media (max-width: 768px) {{ .block-container {{ padding: 2rem 1rem !important; border: 1px solid {color_border} !important; }} .titulo-capa {{ font-size: 2.2rem !important; }} .subtitulo-capitulo {{ font-size: 1.8rem !important; }} .texto {{ font-size: 1.1rem !important; text-indent: 0 !important; }} .dropcap::first-letter {{ font-size: 4rem !important; }} div[data-testid="column"] {{ width: 100% !important; flex: unset !important; }} .ficha-box {{ flex-direction: column; }} }}
