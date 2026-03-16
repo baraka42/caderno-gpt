@@ -254,7 +254,7 @@ else:
 <span class="ficha-texto">RELATÓRIO DA AÇÃO EXTENSIONISTA: ENTRE O PLANEJAR, O FAZER E O SONHAR / organizadores Nome Sobrenome, Nome Sobrenome, Nome Sobrenome; fotografia Nome Sobrenome, Nome Sobrenome; diagramação Nome Sobrenome. - Diamantina: UFVJM, 2024.</span><br><br>
 <span class="ficha-texto">Inclui bibliografia</span><br><br>
 <span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
-<span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Extensão Universitária. I. Sobrenome, Nome. II. Sobrenome, Nome. III. Sobrenome, Nome. IV. Sobrenome, Nome. V. Sobrenome, Nome. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
+<span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Ação extensionista. I. Sobrenome, Nome. II. Sobrenome, Nome. III. Sobrenome, Nome. IV. Sobrenome, Nome. V. Sobrenome, Nome. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
 <div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
 </div>
 </div>
