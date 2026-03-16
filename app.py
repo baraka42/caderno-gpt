@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 import base64
 import os
 
-# --- FUNÇÃO PARA BLINDAR O ÁUDIO CONTRA O BLOQUEIO DO STREAMLIT ---
+# --- FUNÇÕES PARA BLINDAR ELEMENTOS INTERATIVOS CONTRA O BLOQUEIO DO STREAMLIT ---
 def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover, fonte, texto):
     if os.path.exists(caminho):
         with open(caminho, "rb") as f:
@@ -38,6 +38,34 @@ def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover
         </html>
         """
         components.html(html_code, height=60)
+
+def renderizar_botao_imprimir(texto, cor_texto, cor_borda, cor_fundo_hover, cor_texto_hover, fonte):
+    html_code = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Lora:ital,wght@0,400;0,600&display=swap');
+            body {{
+                margin: 0; display: flex; justify-content: center; align-items: center; background-color: transparent;
+            }}
+            .btn-print {{
+                background-color: transparent; border: 1px solid {cor_borda}; color: {cor_texto};
+                padding: 10px 20px; border-radius: 4px; cursor: pointer;
+                font-family: {fonte}; font-size: 1rem; transition: background-color 0.3s, color 0.3s;
+                text-transform: uppercase; letter-spacing: 1px; outline: none;
+            }}
+            .btn-print:hover {{
+                background-color: {cor_fundo_hover}; color: {cor_texto_hover};
+            }}
+        </style>
+    </head>
+    <body>
+        <button class="btn-print" onclick="window.parent.print()">{texto}</button>
+    </body>
+    </html>
+    """
+    components.html(html_code, height=60)
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
@@ -172,16 +200,13 @@ if st.session_state.mundo_invertido:
     .censura {{ background-color: #1a1a1a !important; color: #1a1a1a !important; padding: 0 5px !important; border-radius: 2px; transition: 0.3s; }}
     .censura:hover {{ color: #fff !important; cursor: help; }}
     header, footer {{ visibility: hidden !important; }}
+    
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     
-    /* Estilo do Botão de Download PDF */
-    .btn-pdf-b {{ background-color: transparent !important; color: {color_dossie_text} !important; border: 1px solid {color_border} !important; padding: 10px 20px !important; font-family: 'Special Elite', monospace !important; font-size: 1rem !important; cursor: pointer; transition: 0.3s; width: auto; display: block; margin: 0 auto; border-radius: 4px; }}
-    .btn-pdf-b:hover {{ background-color: {color_border} !important; color: {bg_dossie} !important; }}
-
-    /* Ocultar elementos desnecessários na hora de imprimir */
+    /* Ocultar iframes e botões na impressão */
     @media print {{
-        .stButton, .btn-pdf-b, iframe, div[data-testid="stToolbar"] {{ display: none !important; }}
+        .stButton, iframe, div[data-testid="stToolbar"] {{ display: none !important; }}
         .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; }}
         body, .stApp {{ background-color: transparent !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
     }}
@@ -215,7 +240,9 @@ if st.session_state.mundo_invertido:
 <p class="dossie-texto" style="font-size:2.5rem; text-align: center; margin-top: 3rem; color: #b32424 !important; font-weight:bold;">O Ranca é inevitável!</p>
 ''', unsafe_allow_html=True)
 
-    st.markdown('<div style="text-align:center; margin-top: 4rem; margin-bottom: 1rem;"><button onclick="window.print()" class="btn-pdf-b">Baixar Dossiê (PDF)</button></div>', unsafe_allow_html=True)
+    # Adiciona espaçamento antes do botão de download
+    st.markdown("<br>", unsafe_allow_html=True)
+    renderizar_botao_imprimir("Baixar Dossiê (PDF)", color_dossie_text, color_border, color_border, bg_dossie, "'Special Elite', monospace")
 
     st.button("FECHAR DOSSIÊ E VOLTAR AO RELATÓRIO", on_click=alternar_dimensao)
 
@@ -248,14 +275,10 @@ else:
     header, footer {{ visibility: hidden !important; }}
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
-    
-    /* Estilo do Botão de Download PDF */
-    .btn-pdf-a {{ background-color: transparent !important; color: {color_text} !important; border: 1px solid {color_border} !important; padding: 10px 20px !important; font-family: 'Lora', serif !important; font-size: 1rem !important; cursor: pointer; transition: 0.3s; width: auto; display: block; margin: 0 auto; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;}}
-    .btn-pdf-a:hover {{ background-color: {color_border} !important; color: {bg_paper} !important; }}
 
-    /* Ocultar elementos desnecessários na hora de imprimir */
+    /* Ocultar iframes e botões na impressão */
     @media print {{
-        .stButton, .btn-pdf-a, iframe, div[data-testid="stToolbar"] {{ display: none !important; }}
+        .stButton, iframe, div[data-testid="stToolbar"] {{ display: none !important; }}
         .block-container {{ border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; }}
         body, .stApp {{ background-color: transparent !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }}
     }}
@@ -421,7 +444,9 @@ else:
         st.image("foto_final.jpg", use_container_width=True)
     st.markdown('<div class="legenda-img">Figura 8: Encerramento do projeto. Ginástica para Todos!</div>', unsafe_allow_html=True)
 
-    st.markdown('<div style="text-align:center; margin-top: 4rem; margin-bottom: 1rem;"><button onclick="window.print()" class="btn-pdf-a">Baixar Caderno (PDF)</button></div>', unsafe_allow_html=True)
+    # Adiciona espaçamento antes do botão de download
+    st.markdown("<br>", unsafe_allow_html=True)
+    renderizar_botao_imprimir("Baixar Caderno (PDF)", color_text, color_border, color_border, bg_paper, "'Lora', serif")
 
     st.markdown(f'<div style="margin-top: 2rem; text-align: center; border-top: 1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
     st.button("ACESSAR ANEXO CONFIDENCIAL", on_click=alternar_dimensao)
