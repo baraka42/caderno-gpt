@@ -3,12 +3,37 @@ import streamlit.components.v1 as components
 import base64
 import os
 
+# --- FUNÇÃO PARA CARREGAR IMAGEM COM FALLBACK (tenta raiz, depois pasta 'fotos') ---
+def carregar_imagem(nome_arquivo, legenda=""):
+    # Verifica primeiro na mesma pasta
+    if os.path.exists(nome_arquivo):
+        st.image(nome_arquivo, use_container_width=True, caption=legenda)
+        return True
+    # Verifica na subpasta 'fotos'
+    caminho_fotos = os.path.join("fotos", nome_arquivo)
+    if os.path.exists(caminho_fotos):
+        st.image(caminho_fotos, use_container_width=True, caption=legenda)
+        return True
+    # Se não encontrado, mostra placeholder
+    st.info(f"🖼️ Imagem '{nome_arquivo}' não encontrada. Coloque o arquivo na pasta do projeto ou na subpasta 'fotos'.")
+    return False
+
+def carregar_video_base64(nome_arquivo):
+    # Tenta raiz, depois 'fotos'
+    if os.path.exists(nome_arquivo):
+        with open(nome_arquivo, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    caminho_fotos = os.path.join("fotos", nome_arquivo)
+    if os.path.exists(caminho_fotos):
+        with open(caminho_fotos, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    return None
+
 # --- FUNÇÃO PARA BLINDAR O ÁUDIO CONTRA O BLOQUEIO DO STREAMLIT ---
 def renderizar_audio_seguro(caminho, cor_borda, cor_fundo_hover, cor_texto_hover, fonte, texto):
     if os.path.exists(caminho):
         with open(caminho, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
-        
         html_code = f"""
         <!DOCTYPE html>
         <html>
@@ -62,7 +87,6 @@ def alternar_dimensao():
     st.session_state.mundo_invertido = not st.session_state.mundo_invertido
     st.session_state.reset_scroll = True
 
-# Script para rolar ao topo com atraso controlado
 if st.session_state.reset_scroll:
     components.html("""
     <script>
@@ -121,7 +145,6 @@ if st.session_state.mundo_invertido:
     .stButton > button {{ background-color: transparent !important; color: #b32424 !important; border: 2px dashed #b32424 !important; width: 100% !important; font-family: 'Special Elite', monospace !important; font-size: 1.2rem !important; padding: 1rem !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: #b32424 !important; color: {bg_dossie} !important; }}
     
-    /* ---> DESTRAVA DE IMPRESSÃO (CTRL+P) <--- */
     @media print {{
         div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"] {{ display: none !important; }}
         html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"], .main {{ 
@@ -193,7 +216,6 @@ else:
     .stButton > button {{ background-color: transparent !important; border: 1px solid {color_border} !important; color: {color_accent} !important; width: 100% !important; padding: 20px !important; text-transform: uppercase !important; letter-spacing: 2px !important; transition: 0.3s; margin-top: 2rem;}}
     .stButton > button:hover {{ background-color: {color_accent} !important; color: {bg_paper} !important; }}
 
-    /* Estilos do Sumário Responsivo */
     .sumario-box {{ max-width: 600px; margin: 4rem auto; padding: 2.5rem 3rem; border: 1px solid {color_border}; border-radius: 4px; background-color: transparent; }}
     .sumario-title {{ font-family: 'Playfair Display', serif; font-size: 1.6rem; color: {color_title}; text-align: center; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px; }}
     .sumario-lista {{ list-style: none; padding: 0; margin: 0; text-align: center; }}
@@ -203,7 +225,6 @@ else:
     .sumario-lista a::after {{ content: ''; position: absolute; width: 100%; height: 1px; bottom: -4px; left: 0; background-color: {color_accent}; visibility: hidden; transform: scaleX(0); transition: all 0.3s ease-in-out; }}
     .sumario-lista a:hover::after {{ visibility: visible; transform: scaleX(1); }}
 
-    /* ---> DESTRAVA DE IMPRESSÃO (CTRL+P) <--- */
     @media print {{
         div[data-testid="stToolbar"], div[data-testid="stDecoration"], header, footer, .stButton, iframe, div[data-testid="stToggle"] {{ display: none !important; }}
         html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"], [data-testid="stMainBlockContainer"], .main {{ 
@@ -226,50 +247,92 @@ else:
 
     renderizar_audio_seguro("audio_lado_a.mp3", color_accent, color_accent, bg_paper, "'Lora', serif", "Ouvir Trilha")
 
-    st.markdown('<h1 class="titulo-capa" style="margin-top: 2rem;">RELATÓRIO DA AÇÃO EXTENSIONISTA:<br>ENTRE O PLANEJAR, O FAZER E O SONHAR</h1>', unsafe_allow_html=True)
+    # ========================= CABEÇALHO INSTITUCIONAL =========================
+    st.markdown(f"""
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <p style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: {color_accent}; letter-spacing: 3px; text-transform: uppercase;">
+            UNIVERSIDADE FEDERAL DOS VALES DO JEQUITINHONHA E MUCURI
+        </p>
+        <p style="font-family: 'Lora', serif; font-size: 1rem; color: {color_text}; margin-top: -0.5rem;">
+            Programa de Pós-Graduação Stricto Sensu Profissional em Educação<br>
+            Linha 4: currículos, avaliação, práticas pedagógicas e formação de professores.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ========================= TÍTULO DA DISSERTAÇÃO =========================
+    st.markdown(f"""
+    <h1 class="titulo-capa" style="font-size: 3rem; margin-top: 3rem;">
+        GINÁSTICA PARA TODOS NO ENSINO MÉDIO EM TEMPO INTEGRAL
+    </h1>
+    <p style="text-align: center; font-size: 1.8rem; font-style: italic; color: {color_accent}; font-family: 'Playfair Display', serif;">
+        uma ação extensionista no contexto escolar
+    </p>
+    <div style="text-align: center; margin: 2rem 0;">
+        <p style="font-family: 'Lora', serif; font-size: 1.3rem; color: {color_text};">
+            <em>Caderno Interativo da Dissertação</em>
+        </p>
+        <p style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: {color_accent}; margin-top: 0.5rem;">
+            Thyago Thacyano de Souza dos Santos
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    if os.path.exists("foto_capa.jpg"):
-        st.image("foto_capa.jpg", use_container_width=True)
+    # Imagem de capa com fallback
+    carregar_imagem("foto_capa.jpg",)
 
     st.markdown('<div class="ornamento">❧</div>', unsafe_allow_html=True)
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    st.markdown("""
-<div class="ficha-catalografica-container">
-<div style="text-align: center; margin-bottom: 2rem;">
-<strong class="ficha-texto">Organizadores</strong><br>
-<span class="ficha-texto">Nome Sobrenome</span><br>
-<span class="ficha-texto">Nome Sobrenome</span><br>
-<span class="ficha-texto">Nome Sobrenome</span><br><br>
-<strong class="ficha-texto">Fotografia</strong><br>
-<span class="ficha-texto">Nome Sobrenome</span><br>
-<span class="ficha-texto">Nome Sobrenome</span><br><br>
-<strong class="ficha-texto">Diagramação</strong><br>
-<span class="ficha-texto">Nome Sobrenome</span>
-</div>
-<div style="text-align: center; font-size: 0.95rem;" class="ficha-texto">Elaborado com os dados fornecidos pelo(a) autor(a).</div>
-<div class="ficha-box">
-<div style="width: 50px; font-size: 0.9rem;">P745</div>
-<div style="flex: 1; font-size: 0.95rem; text-align: justify; line-height: 1.4;">
-<span class="ficha-texto">RELATÓRIO DA AÇÃO EXTENSIONISTA: ENTRE O PLANEJAR, O FAZER E O SONHAR / organizadores Nome Sobrenome, Nome Sobrenome, Nome Sobrenome; fotografia Nome Sobrenome, Nome Sobrenome; diagramação Nome Sobrenome. - Diamantina: UFVJM, 2024.</span><br><br>
-<span class="ficha-texto">Inclui bibliografia</span><br><br>
-<span class="ficha-texto">ISBN: 978-65-00-00000-0</span><br><br>
-<span class="ficha-texto">1. Ginástica para todos. 2. Educação Física Escolar. 3. Ação extensionista. I. Sobrenome, Nome. II. Sobrenome, Nome. III. Sobrenome, Nome. IV. Sobrenome, Nome. V. Sobrenome, Nome. VI. Título. VII. Universidade Federal dos Vales do Jequitinhonha e Mucuri.</span><br><br>
-<div style="text-align: right; font-weight: bold;" class="ficha-texto">CDD 372.86</div>
-</div>
-</div>
-<div style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.4;">
-<span class="ficha-texto">Ficha Catalográfica – Serviço de Bibliotecas/UFVJM</span><br>
-<span class="ficha-texto">Bibliotecária Nome Sobrenome – CRB-6/1234</span>
-</div>
-</div>
-""", unsafe_allow_html=True)
+    # ========================= FICHA CATALOGRÁFICA CORRETA =========================
+    st.markdown(f"""
+    <div class="ficha-catalografica-container">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <strong class="ficha-texto">Catalogação na fonte - Sisbi/UFVJM</strong>
+        </div>
+        <div class="ficha-box">
+            <div style="flex: 1; font-size: 0.95rem; line-height: 1.5; font-family: 'Times New Roman', Times, serif; color: {color_text};">
+                <p class="ficha-texto" style="margin-bottom: 0.4rem; text-indent: 0;">S237g  Thacyano de Souza dos Santos, Thyago</p>
+                <p class="ficha-texto" style="margin-left: 2rem; text-indent: -2rem; margin-bottom: 0.4rem;">2026  GINÁSTICA PARA TODOS NO ENSINO MÉDIO EM TEMPO INTEGRAL: [manuscrito] : uma ação extensionista no contexto escolar / Thyago Thacyano de Souza dos Santos. -- Diamantina, 2026.<br>100 p.</p>
+                <p class="ficha-texto" style="margin-left: 2rem; text-indent: -2rem; margin-bottom: 0.4rem;">Orientador: Prof. Cláudia Mara Niquini.<br>Coorientador: Prof. Priscila Lopes.</p>
+                <p class="ficha-texto" style="margin-left: 2rem; text-indent: -2rem; margin-bottom: 0.4rem;">Dissertação (Mestrado Profissional em Educação) -- Universidade Federal dos Vales do Jequitinhonha e Mucuri, Programa de Pós-Graduação em Educação, Diamantina, 2026.</p>
+                <p class="ficha-texto" style="margin-left: 2rem; text-indent: -2rem; margin-bottom: 0.4rem;">1. Ginástica para todos - GPT. 2. Ensino Médio em Tempo Integral. 3. Extensão Universitária. 4. Educação Física escolar. 5. Formação humanizadora. I. Niquini, Cláudia Mara. II. Lopes, Priscila. III. Universidade Federal dos Vales do Jequitinhonha e Mucuri. IV. Título.</p>
+            </div>
+        </div>
+        <div style="text-align: right; margin-top: 0.8rem; font-size: 0.9rem; line-height: 1.4;" class="ficha-texto">
+            Elaborada pelo Sistema de Geração Automática de Ficha Catalográfica da UFVJM com os dados fornecidos pelo(a) autor(a).<br>
+            Este produto é resultado do trabalho conjunto entre o bibliotecário Rodrigo Martins Cruz/CRB6-2886 e a equipe do setor Portal/Diretoria de Comunicação Social da UFVJM.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ========================= BANCA AVALIADORA =========================
+    st.markdown(f"""
+    <div style="max-width: 800px; margin: 4rem auto;">
+        <h2 style="text-align: center; font-family: 'Playfair Display', serif; color: {color_title};">Banca Avaliadora</h2>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; margin-top: 2rem;">
+            <div style="flex: 1; min-width: 250px;">
+                <p style="font-family: 'Lora', serif; color: {color_text};"><strong>Prof. Ms. Guilherme Pereira Drumond</strong><br>
+                <span style="font-size: 0.9rem;">Professor da Escola Estadual Santos Carvalhais/Rio Vermelho – SEE/MG</span></p>
+                <p style="font-family: 'Lora', serif; color: {color_text}; margin-top: 2rem;"><strong>Profa. Dra. Raquel Schwenck de Mello Viana Soares</strong><br>
+                <span style="font-size: 0.9rem;">Professora da Pós-Graduação em Educação - PPGEd/UFVJM</span></p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <p style="font-family: 'Lora', serif; color: {color_text};"><strong>Suplentes</strong></p>
+                <p style="font-family: 'Lora', serif; color: {color_text};"><strong>Profa. Dra. Juliana Nogueira Pontes Nobre</strong><br>
+                <span style="font-size: 0.9rem;">Professora da Universidade Federal da Bahia – UFBA</span></p>
+                <p style="font-family: 'Lora', serif; color: {color_text}; margin-top: 2rem;"><strong>Prof. Dr. Leandro Batista Cordeiro</strong><br>
+                <span style="font-size: 0.9rem;">Professor da Universidade Federal dos Vales do Jequitinhonha e Mucuri – UFVJM</span></p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
+    # ========================= EPÍGRAFE =========================
     st.markdown('<div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">', unsafe_allow_html=True)
-    if os.path.exists("foto_epigrafe.jpg"):
-        st.image("foto_epigrafe.jpg", use_container_width=True)
+    carregar_imagem("foto_epigrafe.jpg")
     st.markdown('''
 <div class="legenda-img" style="margin-bottom: 3rem;">Figura 1: A leveza e o preparo do movimento.</div>
 <div class="epigrafe-container">
@@ -281,7 +344,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
-    # --- SUMÁRIO RESPONSIVO ---
+    # --- SUMÁRIO ---
     st.markdown(f"""
     <div class="sumario-box">
         <div class="sumario-title">Sumário</div>
@@ -299,6 +362,7 @@ else:
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
+    # --- CONTEÚDO (inalterado, mas usando carregar_imagem) ---
     st.markdown('<h2 id="apresentacao" class="subtitulo-capitulo">Apresentação</h2>', unsafe_allow_html=True)
     st.markdown('''
 <p class="texto dropcap">Neste caderno, datas e ponteiros do relógio importam menos do que as transformações que ocorreram nos espaços da Escola Estadual Professora Ayna Torres. A Ginástica para Todos (GPT) não foi apenas uma sequência de aulas práticas; foi um desafio, foi mudança, foi conflito e foi divertido demais!</p>
@@ -318,17 +382,14 @@ else:
 <p class="texto">O convite para o movemento encontrou, de início, a resistência natural de quem teme o novo. No primeiro dia de projeto, quando o portão se abriu, muitos alunos bateram em retirada para a quadra, buscando o conforto das práticas habituais. Mas com insistência, apoio dos bolsistas do PIBID e alguns vídeos legais, a semente da curiosidade foi plantada. Aos poucos, a rotina foi quebrada, e o auditório virou um refúgio de leveza onde o tempo, antes arrastado, passou a voar.</p>
 ''', unsafe_allow_html=True)
     with col2:
-        if os.path.exists("foto_contraste.jpg"):
-            st.image("foto_contraste.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 2: Alunos entrando no auditório e descobrindo os colchonetes.</div>', unsafe_allow_html=True)
+        carregar_imagem("foto_contraste.jpg", "Figura 2: Alunos entrando no auditório e descobrindo os colchonetes.")
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
     st.markdown(f'<h3 id="galeria-a-descoberta" style="text-align: center; color: {color_accent} !important; font-style: italic; margin-bottom: 2rem;">Galeria: A Descoberta</h3>', unsafe_allow_html=True)
     
-    if os.path.exists("video_descoberta.mp4"):
-        with open("video_descoberta.mp4", "rb") as f:
-            b64_video = base64.b64encode(f.read()).decode()
+    b64_video = carregar_video_base64("video_descoberta.mp4")
+    if b64_video:
         st.markdown(f'''
         <div class="box-imagem-paisagem">
             <video autoplay loop muted playsinline style="width: 100%; border-radius: 4px; pointer-events: none;">
@@ -336,6 +397,8 @@ else:
             </video>
         </div>
         ''', unsafe_allow_html=True)
+    else:
+        st.info("🎥 Vídeo 'video_descoberta.mp4' não encontrado. Coloque na pasta do projeto ou na subpasta 'fotos'.")
         
     st.markdown('<div class="legenda-img">Registro 1: O auditório ganhando vida em movimento.</div>', unsafe_allow_html=True)
 
@@ -348,9 +411,7 @@ else:
 <p class="texto">O projeto foi o martelo que estilhaçou todo reflexo do olhar maldoso lá de fora. O ambiente seguro mostrou que a malícia habita a mente de quem assiste, e não a pureza do movimento. Eles aprenderam que a escola é exatamente o lugar para se abrir a cabeça e derrubar essas barreiras.</p>
 ''', unsafe_allow_html=True)
     
-    if os.path.exists("foto_superacao.jpg"):
-        st.image("foto_superacao.jpg", use_container_width=True)
-    st.markdown('<div class="legenda-img">Figura 3: O sorriso após superar o medo da primeira acrobacia.</div>', unsafe_allow_html=True)
+    carregar_imagem("foto_superacao.jpg", "Figura 3: O sorriso após superar o medo da primeira acrobacia.")
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
@@ -363,13 +424,9 @@ else:
 
     col3, col4 = st.columns(2, gap="large")
     with col3:
-        if os.path.exists("foto_apoio.jpg"):
-            st.image("foto_apoio.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 4: Alunos se divertindo.</div>', unsafe_allow_html=True)
+        carregar_imagem("foto_apoio.jpg", "Figura 4: Alunos se divertindo.")
     with col4:
-        if os.path.exists("foto_roda.jpg"):
-            st.image("foto_roda.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 5: Preenchimento dos TCLEs em roda.</div>', unsafe_allow_html=True)
+        carregar_imagem("foto_roda.jpg", "Figura 5: Preenchimento dos TCLEs em roda.")
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
@@ -377,13 +434,9 @@ else:
     
     g_col1, g_col2 = st.columns(2, gap="large")
     with g_col1:
-        if os.path.exists("foto_movimento_1.jpg"):
-            st.image("foto_movimento_1.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 6: Formação geométrica em grupo.</div>', unsafe_allow_html=True)
+        carregar_imagem("foto_movimento_1.jpg", "Figura 6: Formação geométrica em grupo.")
     with g_col2:
-        if os.path.exists("foto_movimento_2.jpg"):
-            st.image("foto_movimento_2.jpg", use_container_width=True)
-        st.markdown('<div class="legenda-img">Figura 7: Sincronia e movimento coletivo.</div>', unsafe_allow_html=True)
+        carregar_imagem("foto_movimento_2.jpg", "Figura 7: Sincronia e movimento coletivo.")
 
     st.markdown('<hr class="quebra-pagina">', unsafe_allow_html=True)
 
@@ -394,9 +447,7 @@ else:
 <p class="texto">E o auditório da escola já ficou pequeno. O novo sonho pulsa nas ruas da cidade: há o desejo de levar as coreografias para além dos muros da escola, nas aglomerações da cidade aos finais de semana. Apresentar a poesia da GPT para a comunidade é a forma definitiva de mostrar que a ginástica é verdadeiramente PARA TODOS.</p>
 ''', unsafe_allow_html=True)
 
-    if os.path.exists("foto_final.jpg"):
-        st.image("foto_final.jpg", use_container_width=True)
-    st.markdown('<div class="legenda-img">Figura 8: Encerramento do projeto. Ginástica para Todos!</div>', unsafe_allow_html=True)
+    carregar_imagem("foto_final.jpg", "Figura 8: Encerramento do projeto. Ginástica para Todos!")
 
     st.markdown(f'<div style="margin-top: 2rem; text-align: center; border-top: 1px dashed {color_border}; padding-top:4rem;">', unsafe_allow_html=True)
     st.button("ACESSAR ANEXO CONFIDENCIAL", on_click=alternar_dimensao)
